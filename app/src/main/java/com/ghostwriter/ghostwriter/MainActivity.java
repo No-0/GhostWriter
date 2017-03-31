@@ -3,6 +3,7 @@ package com.ghostwriter.ghostwriter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onPartialResult(String s) {
+        EditText e = (EditText) findViewById(R.id.Text);
+        e.setText(s);
 
     }
 
