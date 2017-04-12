@@ -1,5 +1,6 @@
 package com.ghostwriter.ghostwriter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SpeechRecognizerClient client;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
+
+    String kkk;
+
 
     EditText et;
     EditText ip_EditText;
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        cnt.setOnClickListener(new View.OnClickListener() {  //서버연결
+        cnt.setOnClickListener(new View.OnClickListener() {                                         //서버연결
             @Override
             public void onClick(View arg0) {
                 client_Server = new SocketClient(ip_EditText.getText().toString(),
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        snb.setOnClickListener(new View.OnClickListener() {  //보내기버튼
+        snb.setOnClickListener(new View.OnClickListener() {                                          //보내기버튼
             @Override
             public void onClick(View arg0) {
                 if (et.getText().toString() != null) {
@@ -147,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.socket = socket;
             try {
                 output = new DataOutputStream(socket.getOutputStream());
+
             } catch (Exception e) {
             }
         }
@@ -162,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (output != null) {
                     if (sendmsg != null) {
                         output.writeUTF(mac + " : " + sendmsg);
+                        output.writeUTF(mac + " : " + kkk);
+
+                        //onResults();
                     }
                 }
             } catch (IOException e) {
@@ -172,9 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 npe.printStackTrace();
             }
 
-
         }
-
     }
 ////////////////////////////////////////////////////////음성인식관련/////////////////////////////////////////////
     @Override
@@ -211,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ArrayList<String> results = data.getStringArrayListExtra(VoiceRecoActivity.EXTRA_KEY_RESULT_ARRAY);
 
             final StringBuilder builder = new StringBuilder();
-
             for (String result : results) {
                 builder.append(result);
                 builder.append("\n");
@@ -282,18 +287,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onResults(Bundle bundle) {
+        final StringBuilder builder = new StringBuilder();
+
         ArrayList<String> Text = bundle.getStringArrayList(SpeechRecognizerClient.KEY_RECOGNITION_RESULTS);
         ArrayList<Integer> confs = bundle.getIntegerArrayList(SpeechRecognizerClient.KEY_CONFIDENCE_VALUES);
 
+
         Strcontroler strcontroler = new Strcontroler();
         strcontroler.str = Text.get(0);
+
         strcontroler.Thrcounter = i;
 
-        datafromteacher.put(strcontroler.str, strcontroler.Thrcounter);
+        kkk = strcontroler.str;
+
+       // Text.writeUTF
+
+        //datafromteacher.put(strcontroler.str, strcontroler.Thrcounter);
 
         Log.i("str", strcontroler.str);             //  -->서버로 보내질 음성인식 스트링
         Log.i("i", ""+strcontroler.Thrcounter);    //  -->서버로 보내질 음성인식 순서
 
+
+/*
+        for (int i = 0; i < Text.size(); i++) {
+            builder.append(Text.get(i));
+            builder.append(" (");
+            builder.append(confs.get(i).intValue());
+            builder.append(")\n");
+        }
+*/
+/*
+        final Activity activity = this;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // finishing일때는 처리하지 않는다.
+                if (activity.isFinishing()) return;
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(activity).
+                        setMessage(builder.toString()).
+                        setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                dialog.show();
+
+
+            }
+        });
+*/
     }
 
     @Override
