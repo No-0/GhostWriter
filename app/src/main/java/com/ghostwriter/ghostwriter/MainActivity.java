@@ -8,8 +8,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,8 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, SpeechRecognizeListener {
+public class MainActivity extends Activity implements View.OnClickListener, SpeechRecognizeListener {
     private SpeechRecognizerClient client;
+    private SpeechRecognizerClient client2;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
 
@@ -43,11 +42,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText port_EditText;
     Button cnt;
     Button snb;
+    Button But;
     Handler msghandler;
 
     SocketClient client_Server;
     SendThread send;
+    SendThread send2;
+    SendThread2 send3;
     Socket socket;
+
+    String KKK2;
+
+    SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
+            setApiKey(APIKEY).
+            setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
+            .setGlobalTimeOut(50);
+
 
     LinkedList<SocketClient> threadList;
     HashMap<String, Integer> datafromteacher = new HashMap<String, Integer>();
@@ -66,10 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         port_EditText = (EditText)findViewById(R.id.port_EditText);
         cnt = (Button)findViewById(R.id.connect_Button);
         snb = (Button)findViewById(R.id.send_button);
+        But = (Button)findViewById(R.id.radioButton);
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        ip_EditText.setText(""); //아이피주소
-        port_EditText.setText(""); //포트번호
+        ip_EditText.setText("223.194.154.49"); //아이피주소
+        port_EditText.setText("5001"); //포트번호
 
 
 
@@ -90,17 +101,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (et.getText().toString() != null) {
                     send = new SendThread(socket);
                     send.start();
-
                     et.setText("");
                 }
             }
         });
 
-
-
-
-
-
+        //But.setOnClickListener(this);
 
     }
 
@@ -168,6 +174,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (sendmsg != null) {
                         output.writeUTF(mac + " : " + sendmsg);
                         output.writeUTF(mac + " : " + kkk);
+                        //KKK2 = kkk;
+                        //onResults();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException npe)
+
+            {
+                npe.printStackTrace();
+            }
+
+        }
+    }
+    class SendThread2 extends Thread {
+        private Socket socket;
+        String sendmsg = et.getText().toString();
+        DataOutputStream output;
+
+        public SendThread2(Socket socket) {
+            this.socket = socket;
+            try {
+                output = new DataOutputStream(socket.getOutputStream());
+
+            } catch (Exception e) {
+            }
+        }
+
+        public void run() {
+            try {
+                Log.d(ACTIVITY_SERVICE, "11111");
+                String mac = null;
+                WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                WifiInfo info = mng.getConnectionInfo();
+                mac = info.getMacAddress();
+
+                if (output != null) {
+                    if (sendmsg != null) {
+                        output.writeUTF(mac + " : " + sendmsg);
+                        output.writeUTF(mac + " : " + kkk);
+
 
                         //onResults();
                     }
@@ -190,19 +237,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SpeechRecognizerManager.getInstance().finalizeLibrary();
     }
 
+
+
     @Override
     public void onClick(View v) {
+
         int id = v.getId();
 
-        String serviceType = SpeechRecognizerClient.SERVICE_TYPE_WEB;
+        String serviceType = SpeechRecognizerClient.SERVICE_TYPE_DICTATION;
 
         if(id == R.id.radioButton){
             if(PermissionUtils.checkAudioRecordPermission(this)) {
-                SpeechRecognizerClient.Builder builder = new SpeechRecognizerClient.Builder().
-                        setApiKey(APIKEY).
-                        setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION);
-                i = 0;
-                client = builder.build();
+//               SpeechRecognizerClient.Builder builder = new SpeechRecognizerClient.Builder().
+//                        setApiKey(APIKEY).
+//                        setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
+//                        .setGlobalTimeOut(50);
+//
+//                client = builder.build();
+//                client.setSpeechRecognizeListener(this);
+
+                client = builder1.build();
                 client.setSpeechRecognizeListener(this);
                 client.startRecording(true);
                 Log.i("startRe",""+i);
@@ -210,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -267,11 +322,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onEndOfSpeech() {
-        client.stopRecording();
-        Log.i("STOPREC", ""+i);
+        //client.stopRecording();
+       // Log.i("STOPREC", ""+i);
         i++;
 
-        client.startRecording(true);
+        //client.startRecording(true);
         Log.i("startRe",""+i);
     }
 
@@ -283,7 +338,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onPartialResult(String s) {
 
+//        kkk=s;
+//        if(KKK2 != null)
+//            kkk = kkk.substring(KKK2.length(), kkk.length());
+//        send2 = new SendThread(socket);
+//        send2.start();
+
+
     }
+
+
 
     @Override
     public void onResults(Bundle bundle) {
@@ -300,45 +364,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         kkk = strcontroler.str;
 
-       // Text.writeUTF
-
-        //datafromteacher.put(strcontroler.str, strcontroler.Thrcounter);
+        findViewById(R.id.radioButton).performClick();
+        send3= new SendThread2(socket);
+        send3.start();
 
         Log.i("str", strcontroler.str);             //  -->서버로 보내질 음성인식 스트링
         Log.i("i", ""+strcontroler.Thrcounter);    //  -->서버로 보내질 음성인식 순서
 
 
-/*
-        for (int i = 0; i < Text.size(); i++) {
-            builder.append(Text.get(i));
-            builder.append(" (");
-            builder.append(confs.get(i).intValue());
-            builder.append(")\n");
-        }
-*/
-/*
-        final Activity activity = this;
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // finishing일때는 처리하지 않는다.
-                if (activity.isFinishing()) return;
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(activity).
-                        setMessage(builder.toString()).
-                        setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                dialog.show();
-
-
-            }
-        });
-*/
     }
 
     @Override
@@ -349,7 +383,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onFinished() {
 
+        client.startRecording(true);
+
     }
+
 }
 class Strcontroler{
     String str;
