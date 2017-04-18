@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import static com.ghostwriter.ghostwriter.R.id.ip_EditText;
+import static com.ghostwriter.ghostwriter.R.id.port_EditText;
+
 public class MainActivity extends Activity implements View.OnClickListener, SpeechRecognizeListener {
     private SpeechRecognizerClient client;
     private SpeechRecognizerClient client2;
@@ -36,10 +39,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
     String kkk;
 
+    String IPadr;
+    String PortN;
 
-    EditText et;
-    EditText ip_EditText;
-    EditText port_EditText;
     Button cnt;
     Button snb;
     Button But;
@@ -71,40 +73,32 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         findViewById(R.id.radioButton).setOnClickListener(this);
 
-        et =(EditText) findViewById(R.id.Text);
-        ip_EditText = (EditText)findViewById(R.id.ip_EditText);
-        port_EditText = (EditText)findViewById(R.id.port_EditText);
+
         cnt = (Button)findViewById(R.id.connect_Button);
         snb = (Button)findViewById(R.id.send_button);
         But = (Button)findViewById(R.id.radioButton);
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        ip_EditText.setText("223.194.154.49"); //아이피주소
-        port_EditText.setText("5001"); //포트번호
+        IPadr = "223.194.154.49"; //아이피주소
+        PortN =  "5001"; //포트번호
 
 
 
+        client_Server = new SocketClient(IPadr, PortN);
+        threadList.add(client_Server);
+        client_Server.start();
 
-        cnt.setOnClickListener(new View.OnClickListener() {                                         //서버연결
-            @Override
-            public void onClick(View arg0) {
-                client_Server = new SocketClient(ip_EditText.getText().toString(),
-                        port_EditText.getText().toString());
-                threadList.add(client_Server);
-                client_Server.start();
-            }
-        });
 
-        snb.setOnClickListener(new View.OnClickListener() {                                          //보내기버튼
-            @Override
-            public void onClick(View arg0) {
-                if (et.getText().toString() != null) {
-                    send = new SendThread(socket);
-                    send.start();
-                    et.setText("");
-                }
-            }
-        });
+//        snb.setOnClickListener(new View.OnClickListener() {                                          //보내기버튼 not need now
+//            @Override
+//            public void onClick(View arg0) {
+//                if (et.getText().toString() != null) {
+//                    send = new SendThread(socket);
+//                    send.start();
+//                    et.setText("");
+//                }
+//            }
+//        });
 
         //But.setOnClickListener(this);
 
@@ -150,7 +144,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
     class SendThread extends Thread {
         private Socket socket;
-        String sendmsg = et.getText().toString();
         DataOutputStream output;
 
         public SendThread(Socket socket) {
@@ -171,8 +164,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                 mac = info.getMacAddress();
 
                 if (output != null) {
-                    if (sendmsg != null) {
-                        output.writeUTF(mac + " : " + sendmsg);
+                    if (kkk != null) {
+
                         output.writeUTF(mac + " : " + kkk);
                         //KKK2 = kkk;
                         //onResults();
@@ -190,7 +183,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     }
     class SendThread2 extends Thread {
         private Socket socket;
-        String sendmsg = et.getText().toString();
+
         DataOutputStream output;
 
         public SendThread2(Socket socket) {
@@ -211,8 +204,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                 mac = info.getMacAddress();
 
                 if (output != null) {
-                    if (sendmsg != null) {
-                        output.writeUTF(mac + " : " + sendmsg);
+                    if (kkk != null) {
+
                         output.writeUTF(mac + " : " + kkk);
 
 
@@ -246,7 +239,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         String serviceType = SpeechRecognizerClient.SERVICE_TYPE_DICTATION;
 
-        if(id == R.id.radioButton){
+        if(id == R.id.Button){
             if(PermissionUtils.checkAudioRecordPermission(this)) {
 //               SpeechRecognizerClient.Builder builder = new SpeechRecognizerClient.Builder().
 //                        setApiKey(APIKEY).

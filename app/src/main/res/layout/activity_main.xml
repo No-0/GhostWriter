@@ -11,48 +11,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.66"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="8dp"
-        android:layout_weight="0.66">
+        tools:layout_editor_absoluteY="0dp">
 
-        <EditText
-            android:layout_width="333dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/ip_EditText"
-            android:hint="IP주소 입력"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/port_EditText"
-            android:hint="PORT 입력"/>
-
-        <Button
-            android:id="@+id/connect_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="연결버튼" />
     </LinearLayout>
 
-
-    <EditText
-        android:id="@+id/Text"
-        android:layout_width="409dp"
-        android:layout_height="61dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.575" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/radioButton"
+            android:id="@+id/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -65,11 +38,11 @@
             android:id="@+id/send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:text="send"
             tools:layout_editor_absoluteX="293dp"
-            tools:layout_editor_absoluteY="367dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            tools:layout_editor_absoluteY="367dp" />
 
     </RelativeLayout>
 
