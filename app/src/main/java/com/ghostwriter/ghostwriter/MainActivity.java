@@ -81,10 +81,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
-        findViewById(R.id.button2).setEnabled(false);//수업 종료 버튼 비활성화
-
         findViewById(R.id.Button).setOnClickListener(this);
-
+        findViewById(R.id.button2).setEnabled(false);
 
         //cnt = (Button)findViewById(R.id.connect_Button);
         //snb = (Button)findViewById(R.id.send_button);
