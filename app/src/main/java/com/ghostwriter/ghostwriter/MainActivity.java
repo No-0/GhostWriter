@@ -163,6 +163,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         public void run() {
             try {
                 socket = new Socket(ip, Integer.parseInt(port));
+
                 //inputStream = socket.getInputStream();
                 output = new DataOutputStream(socket.getOutputStream());
 
