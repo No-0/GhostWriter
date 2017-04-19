@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -89,7 +88,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
        // But = (Button)findViewById(R.id.radioButton);
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.154.49"; //아이피주소
+        IPadr = "223.194.153.40"; //아이피주소
         PortN =  "5001"; //포트번호
 
 
@@ -393,6 +392,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         findViewById(R.id.Button).performClick();
         send3= new SendThread2(socket);
         send3.start();
+        try {
+            send3.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Log.i("str", strcontroler.str);             //  -->서버로 보내질 음성인식 스트링
         Log.i("i", ""+strcontroler.Thrcounter);    //  -->서버로 보내질 음성인식 순서
