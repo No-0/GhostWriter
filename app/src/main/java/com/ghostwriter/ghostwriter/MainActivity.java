@@ -81,6 +81,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
+        findViewById(R.id.button2).setEnabled(false);//수업 종료 버튼 비활성화
+
         findViewById(R.id.Button).setOnClickListener(this);
 
 
@@ -281,6 +283,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 //
 //                client = builder.build();
 //                client.setSpeechRecognizeListener(this);
+                findViewById(R.id.Button).setEnabled(false);// 수업시작 버튼 비활성화
+                findViewById(R.id.button2).setEnabled(true);
 
                 client = builder1.build();
                 client.setSpeechRecognizeListener(this);
@@ -288,6 +292,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                 Log.i("startRe",""+i);
 
             }
+        }
+
+        if(id == R.id.button2){
+                findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
+            findViewById(R.id.button2).setEnabled(false);
+          //      client = builder1.build();
+           //     client.stopRecording();
+            //    Log.i("End",""+i);
+
+
         }
     }
 
