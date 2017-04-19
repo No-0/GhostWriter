@@ -11,8 +11,11 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
@@ -28,14 +31,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static com.ghostwriter.ghostwriter.R.id.ip_EditText;
-import static com.ghostwriter.ghostwriter.R.id.port_EditText;
+//import static com.ghostwriter.ghostwriter.R.id.ip_EditText;
+//import static com.ghostwriter.ghostwriter.R.id.port_EditText;
 
 public class MainActivity extends Activity implements View.OnClickListener, SpeechRecognizeListener {
     private SpeechRecognizerClient client;
     private SpeechRecognizerClient client2;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
+
+    Object SelectGrade;
+    Object SelectClass;
 
     String kkk;
 
@@ -69,14 +75,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
+        pictureim.setImageResource(R.drawable.title);
+
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
-        findViewById(R.id.radioButton).setOnClickListener(this);
+        findViewById(R.id.Button).setOnClickListener(this);
 
 
-        cnt = (Button)findViewById(R.id.connect_Button);
-        snb = (Button)findViewById(R.id.send_button);
-        But = (Button)findViewById(R.id.radioButton);
+        //cnt = (Button)findViewById(R.id.connect_Button);
+        //snb = (Button)findViewById(R.id.send_button);
+       // But = (Button)findViewById(R.id.radioButton);
         threadList = new LinkedList<MainActivity.SocketClient>();
 
         IPadr = "223.194.154.49"; //아이피주소
@@ -87,6 +97,32 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         client_Server = new SocketClient(IPadr, PortN);
         threadList.add(client_Server);
         client_Server.start();
+
+
+
+        //학년, 반 선택
+        Spinner gradeSpinner=(Spinner)findViewById(R.id.Grade);
+        gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                SelectGrade = adapterView.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        Spinner SlassSpinner=(Spinner)findViewById(R.id.Class);
+
+        SlassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                SelectClass = adapterView.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
 
 //        snb.setOnClickListener(new View.OnClickListener() {                                          //보내기버튼 not need now
@@ -183,7 +219,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     }
     class SendThread2 extends Thread {
         private Socket socket;
-
         DataOutputStream output;
 
         public SendThread2(Socket socket) {
@@ -205,10 +240,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
                 if (output != null) {
                     if (kkk != null) {
-
                         output.writeUTF(mac + " : " + kkk);
-
-
                         //onResults();
                     }
                 }
@@ -357,7 +389,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         kkk = strcontroler.str;
 
-        findViewById(R.id.radioButton).performClick();
+        findViewById(R.id.Button).performClick();
         send3= new SendThread2(socket);
         send3.start();
 
