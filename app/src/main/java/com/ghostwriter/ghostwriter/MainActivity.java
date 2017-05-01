@@ -29,6 +29,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.TimerTask;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 //import static com.ghostwriter.ghostwriter.R.id.ip_EditText;
 //import static com.ghostwriter.ghostwriter.R.id.port_EditText;
@@ -39,8 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
 
-    Object SelectGrade;
-    Object SelectClass;
+    Object SelectSubject;
 
     String kkk;
 
@@ -51,6 +53,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     Button snb;
     Button But;
     Handler msghandler;
+
+    boolean CR = false;
 
     SocketClient client_Server;
     SendThread send;
@@ -81,6 +85,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
         findViewById(R.id.Button).setOnClickListener(this);
+
+        findViewById(R.id.button2).setOnClickListener(this);
+
         findViewById(R.id.button2).setEnabled(false);
 
         //cnt = (Button)findViewById(R.id.connect_Button);
@@ -88,7 +95,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
        // But = (Button)findViewById(R.id.radioButton);
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.153.40"; //아이피주소
+        IPadr = "223.194.159.43"; //아이피주소
         PortN =  "5001"; //포트번호
 
 
@@ -100,23 +107,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
 
         //학년, 반 선택
-        Spinner gradeSpinner=(Spinner)findViewById(R.id.Grade);
-        gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                SelectGrade = adapterView.getItemAtPosition(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
 
-        Spinner SlassSpinner=(Spinner)findViewById(R.id.Class);
+        Spinner SlassSpinner=(Spinner)findViewById(R.id.Subject);
 
         SlassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                SelectClass = adapterView.getItemAtPosition(position);
+                SelectSubject = adapterView.getItemAtPosition(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -136,6 +133,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 //        });
 
         //But.setOnClickListener(this);
+
 
     }
 
@@ -264,6 +262,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
 
 
+
     @Override
     public void onClick(View v) {
 
@@ -282,18 +281,23 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 //                client.setSpeechRecognizeListener(this);
                 findViewById(R.id.Button).setEnabled(false);// 수업시작 버튼 비활성화
                 findViewById(R.id.button2).setEnabled(true);
-
+                CR = false;
                 client = builder1.build();
                 client.setSpeechRecognizeListener(this);
                 client.startRecording(true);
+
                 Log.i("startRe",""+i);
 
             }
         }
 
+
         if(id == R.id.button2){
-                findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
             findViewById(R.id.button2).setEnabled(false);
+            CR=true;
+            client.cancelRecording();
+            findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
+
           //      client = builder1.build();
            //     client.stopRecording();
             //    Log.i("End",""+i);
@@ -375,13 +379,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     @Override
     public void onPartialResult(String s) {
 
-//        kkk=s;
-//        if(KKK2 != null)
-//            kkk = kkk.substring(KKK2.length(), kkk.length());
-//        send2 = new SendThread(socket);
-//        send2.start();
-
-
     }
 
 
@@ -424,7 +421,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
     @Override
     public void onFinished() {
-
+        if(CR ==false)
         client.startRecording(true);
 
     }

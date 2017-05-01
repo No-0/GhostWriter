@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -27,6 +28,7 @@ public class StudentActivity extends AppCompatActivity {
     SocketClient client_Server;
     ReceiveThread RT;
 
+    String GETText;
 
     Socket socket;
     TextView show;
@@ -37,7 +39,7 @@ public class StudentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student);
 
         IPadr = "223.194.153.40"; //아이피주소
-        PortN =  "5001"; //포트번호
+        PortN =  "5000"; //포트번호
         show = (TextView)findViewById(R.id.show);
 
         msghandler = new Handler() {
@@ -53,8 +55,23 @@ public class StudentActivity extends AppCompatActivity {
 
         client_Server.start();
 
-
-
+        GETText = ((SelectSubActivity)SelectSubActivity.mContext).GetText();//학생이 선택한 과목명반환함수
+            switch(GETText){//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
+                case "국어": PortN =  "5001";break;
+                case "수학": PortN =  "5002";break;
+                case "국사": PortN =  "5003";break;
+                case "사회문화": PortN =  "5004";break;
+                case "화학": PortN =  "5005";break;
+                case "생명과학": PortN =  "5006";break;
+                case "물리": PortN =  "5007";break;
+                default: {
+                    Toast.makeText(this, "Select Subject Error", Toast.LENGTH_LONG).show();
+                    //어플 종료
+                    moveTaskToBack(true);
+                    finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            }
         //폰트 크기 설정
         Button FontUp = (Button) findViewById(R.id.font_up);
         FontUp.setOnClickListener(new View.OnClickListener() {

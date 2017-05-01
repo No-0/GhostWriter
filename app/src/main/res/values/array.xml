@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="Grade">
-        <item>1학년</item>
-        <item>2학년</item>
-        <item>3학년</item>
-        <item>4학년</item>
-        <item>5학년</item>
-        <item>6학년</item>
-    </string-array>
-    <string-array name="Class">
-        <item>1반</item>
-        <item>2반</item>
-        <item>3반</item>
+
+    <string-array name="Subject">
+        <item>국어</item>
+        <item>수학</item>
+        <item>국사</item>
+        <item>사회문화</item>
+        <item>화학</item>
+        <item>지구과학</item>
+        <item>물리</item>
     </string-array>
 </resources>
