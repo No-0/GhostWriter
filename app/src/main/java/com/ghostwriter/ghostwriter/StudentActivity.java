@@ -5,6 +5,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -28,8 +31,11 @@ public class StudentActivity extends AppCompatActivity {
     SocketClient client_Server;
     ReceiveThread RT;
 
+
+
     String GETText;
 
+    TextView SName;
     Socket socket;
     TextView show;
     Handler msghandler;
@@ -39,23 +45,14 @@ public class StudentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student);
 
         IPadr = "223.194.153.40"; //아이피주소
-        PortN =  "5000"; //포트번호
+
         show = (TextView)findViewById(R.id.show);
 
-        msghandler = new Handler() {
-            @Override
-            public void handleMessage(Message hdmsg) {
-                if (hdmsg.what == 1111) {
-                    show.append(hdmsg.obj.toString() + "\n");
-                }
-            }
-        };
 
-        client_Server = new SocketClient(IPadr, PortN);
+      GETText = ((SelectSubActivity)SelectSubActivity.mContext).GetText();
 
-        client_Server.start();
+        Log.i(this.GETText,"===============");
 
-        GETText = ((SelectSubActivity)SelectSubActivity.mContext).GetText();//학생이 선택한 과목명반환함수
             switch(GETText){//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
                 case "국어": PortN =  "5001";break;
                 case "수학": PortN =  "5002";break;
@@ -69,9 +66,12 @@ public class StudentActivity extends AppCompatActivity {
                     //어플 종료
                     moveTaskToBack(true);
                     finish();
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    Process.killProcess(Process.myPid());
                 }
             }
+        SName = (TextView)findViewById(R.id.SubjectName);
+        SName.setText(GETText);
+
         //폰트 크기 설정
         Button FontUp = (Button) findViewById(R.id.font_up);
         FontUp.setOnClickListener(new View.OnClickListener() {

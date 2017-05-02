@@ -7,71 +7,50 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
 import net.daum.mf.speech.api.SpeechRecognizerManager;
 import net.daum.mf.speech.api.impl.util.PermissionUtils;
-
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.TimerTask;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-
-//import static com.ghostwriter.ghostwriter.R.id.ip_EditText;
-//import static com.ghostwriter.ghostwriter.R.id.port_EditText;
 
 public class MainActivity extends Activity implements View.OnClickListener, SpeechRecognizeListener {
     private SpeechRecognizerClient client;
-    private SpeechRecognizerClient client2;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
 
     Object SelectSubject;
-
     String kkk;
-
     String IPadr;
     String PortN;
 
-    Button cnt;
-    Button snb;
-    Button But;
-    Handler msghandler;
-
     boolean CR = false;
+    boolean Check = false;
 
     SocketClient client_Server;
-    SendThread send;
-    SendThread send2;
+    SocketClient2 lesson_Server;
     SendThread2 send3;
     Socket socket;
+    Socket socket2;
 
-    String KKK2;
 
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
             setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
             .setGlobalTimeOut(50);
 
-
     LinkedList<SocketClient> threadList;
-    HashMap<String, Integer> datafromteacher = new HashMap<String, Integer>();
+    LinkedList<SocketClient2> threadList2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,50 +69,29 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         findViewById(R.id.button2).setEnabled(false);
 
-        //cnt = (Button)findViewById(R.id.connect_Button);
-        //snb = (Button)findViewById(R.id.send_button);
-       // But = (Button)findViewById(R.id.radioButton);
         threadList = new LinkedList<MainActivity.SocketClient>();
 
         IPadr = "223.194.159.43"; //아이피주소
-        PortN =  "5001"; //포트번호
-
+        PortN =  "5000"; //포트번호
 
 
         client_Server = new SocketClient(IPadr, PortN);
         threadList.add(client_Server);
         client_Server.start();
 
-
-
-        //학년, 반 선택
+        //과목 선택
 
         Spinner SlassSpinner=(Spinner)findViewById(R.id.Subject);
 
         SlassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                SelectSubject = adapterView.getItemAtPosition(position);
+                SelectSubject = adapterView.getItemAtPosition(position);//해당위치의 과목명 저장
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
-
-//        snb.setOnClickListener(new View.OnClickListener() {                                          //보내기버튼 not need now
-//            @Override
-//            public void onClick(View arg0) {
-//                if (et.getText().toString() != null) {
-//                    send = new SendThread(socket);
-//                    send.start();
-//                    et.setText("");
-//                }
-//            }
-//        });
-
-        //But.setOnClickListener(this);
-
 
     }
 
@@ -144,9 +102,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         String port;
         String mac;
 
-        //InputStream inputStream = null;
-        OutputStream outputStream = null;
-        BufferedReader br = null;
 
         private DataOutputStream output = null;
 
@@ -161,60 +116,58 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
             try {
                 socket = new Socket(ip, Integer.parseInt(port));
 
-                //inputStream = socket.getInputStream();
                 output = new DataOutputStream(socket.getOutputStream());
 
 
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-
                 output.writeUTF(mac);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    class SendThread extends Thread {
-        private Socket socket;
-        DataOutputStream output;
 
-        public SendThread(Socket socket) {
-            this.socket = socket;
-            try {
-                output = new DataOutputStream(socket.getOutputStream());
+    class SocketClient2 extends Thread {
+        boolean threadAlive;
+        String ip;
+        String port;
+        String mac;
 
-            } catch (Exception e) {
-            }
+
+        private DataOutputStream output = null;
+
+        public SocketClient2(String ip, String port) {
+            threadAlive = true;
+            this.ip = ip;
+            this.port = port;
         }
 
+        @Override
         public void run() {
             try {
-                Log.d(ACTIVITY_SERVICE, "11111");
-                String mac = null;
+                socket2 = new Socket(ip, Integer.parseInt(port));
+
+                output = new DataOutputStream(socket.getOutputStream());
+
+
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-
-                if (output != null) {
-                    if (kkk != null) {
-
-                        output.writeUTF(mac + " : " + kkk);
-                        //KKK2 = kkk;
-                        //onResults();
-                    }
+                output.writeUTF(mac);
+                if(CR){
+                    socket.close();
+                    CR=false;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (NullPointerException npe)
-
-            {
-                npe.printStackTrace();
             }
-
         }
     }
+
     class SendThread2 extends Thread {
         private Socket socket;
         DataOutputStream output;
@@ -272,21 +225,52 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         if(id == R.id.Button){
             if(PermissionUtils.checkAudioRecordPermission(this)) {
-//               SpeechRecognizerClient.Builder builder = new SpeechRecognizerClient.Builder().
-//                        setApiKey(APIKEY).
-//                        setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
-//                        .setGlobalTimeOut(50);
-//
-//                client = builder.build();
-//                client.setSpeechRecognizeListener(this);
                 findViewById(R.id.Button).setEnabled(false);// 수업시작 버튼 비활성화
                 findViewById(R.id.button2).setEnabled(true);
-                CR = false;
-                client = builder1.build();
-                client.setSpeechRecognizeListener(this);
-                client.startRecording(true);
+                if(!Check) {
+                    switch (SelectSubject.toString()) {
+                        case "국어":
+                            PortN = "5001";
+                            break;
+                        case "수학":
+                            PortN = "5002";
+                            break;
+                        case "국사":
+                            PortN = "5003";
+                            break;
+                        case "사회문화":
+                            PortN = "5004";
+                            break;
+                        case "화학":
+                            PortN = "5005";
+                            break;
+                        case "생명과학":
+                            PortN = "5006";
+                            break;
+                        case "물리":
+                            PortN = "5007";
+                            break;
+                        default: {
+                            //어플 종료
+                            moveTaskToBack(true);
+                            finish();
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                        }
+                    }
+                    lesson_Server = new SocketClient2(IPadr, PortN);
+                    threadList2.add(lesson_Server);
+                    lesson_Server.start();
 
-                Log.i("startRe",""+i);
+                    Check = true;
+                }
+
+
+                    CR = false;
+                    client = builder1.build();
+                    client.setSpeechRecognizeListener(this);
+                    client.startRecording(true);
+
+                    Log.i("startRe", "" + i);
 
             }
         }
@@ -296,12 +280,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
             findViewById(R.id.button2).setEnabled(false);
             CR=true;
             client.cancelRecording();
+
             findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
-
-          //      client = builder1.build();
-           //     client.stopRecording();
-            //    Log.i("End",""+i);
-
 
         }
     }
@@ -399,7 +379,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         kkk = strcontroler.str;
 
         findViewById(R.id.Button).performClick();
-        send3= new SendThread2(socket);
+        send3= new SendThread2(socket2);
         send3.start();
         try {
             send3.join();
