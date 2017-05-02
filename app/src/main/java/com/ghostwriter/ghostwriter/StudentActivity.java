@@ -85,7 +85,7 @@ public class StudentActivity extends AppCompatActivity {
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize + 4);
                 }
             }
-        });
+        }); 
 
         Button FontDown = (Button) findViewById(R.id.font_down);
         FontDown.setOnClickListener(new View.OnClickListener() {
