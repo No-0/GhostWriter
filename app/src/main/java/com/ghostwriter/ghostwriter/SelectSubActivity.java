@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,8 +18,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-
-import static com.ghostwriter.ghostwriter.R.id.show;
 
 public class SelectSubActivity extends AppCompatActivity {
     static final String[] LIST_MENU = {"국어", "수학","국사","사회문화","화학","생명과학","물리"} ;// 서버에서 진행중인 수업 리스트 불러오기
@@ -53,16 +50,7 @@ public class SelectSubActivity extends AppCompatActivity {
 
         IPadr = "223.194.153.40"; //아이피주소
         PortN =  "5000"; //포트번호
-
-
-        msghandler = new Handler() {
-            @Override
-            public void handleMessage(Message hdmsg) {
-                if (hdmsg.what == 1111) {
-                    show.append(hdmsg.obj.toString() + "\n");
-                }
-            }
-        };
+        
 
         client_Server =new SocketClient(IPadr, PortN);
 
@@ -71,7 +59,6 @@ public class SelectSubActivity extends AppCompatActivity {
 
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU) ;
-
 
 
 
@@ -123,7 +110,10 @@ public class SelectSubActivity extends AppCompatActivity {
                 output = new DataOutputStream(socket.getOutputStream());
                 RT = new ReceiveThread(socket);
                 RT.start();
-
+                switch(RT.getMsg()){
+                    case "선생님 국어" :
+                    case "선생님 수학" :
+                }
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();

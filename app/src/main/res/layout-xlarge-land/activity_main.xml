@@ -10,18 +10,17 @@
 
 
     <RelativeLayout
-        android:layout_width="387dp"
-        android:layout_height="574dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@android:color/background_light"
         tools:layout_editor_absoluteX="-1dp"
         tools:layout_editor_absoluteY="-4dp">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="85dp"
             app:srcCompat="@drawable/title"
             tools:layout_editor_absoluteX="89dp"
 
@@ -29,25 +28,28 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
             android:layout_alignTop="@+id/Subject"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="0dp"
             android:layout_toStartOf="@+id/Subject"
             android:text="과목"
+            android:textSize="30sp"
             tools:layout_editor_absoluteX="71dp"
             tools:layout_editor_absoluteY="273dp" />
 
         <Spinner
             android:id="@+id/Subject"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_width="170dp"
+            android:layout_height="35dp"
             android:layout_above="@+id/Button"
-            android:layout_marginBottom="61dp"
+            android:layout_alignEnd="@+id/button2"
+            android:layout_marginBottom="80dp"
+            android:layout_marginEnd="400dp"
             android:entries="@array/Subject"
+            android:gravity="center_vertical|center_horizontal"
             tools:layout_editor_absoluteX="125dp"
-            tools:layout_editor_absoluteY="271dp"
-            android:layout_alignEnd="@+id/button2" />
+            tools:layout_editor_absoluteY="271dp" />
 
         <Button
             android:id="@+id/Button"

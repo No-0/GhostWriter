@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -29,7 +27,7 @@ public class StudentActivity extends AppCompatActivity {
     String IPadr;
     String PortN;
     SocketClient client_Server;
-    ReceiveThread RT;
+    SReceiveThread RT;
 
 
 
@@ -71,6 +69,16 @@ public class StudentActivity extends AppCompatActivity {
             }
         SName = (TextView)findViewById(R.id.SubjectName);
         SName.setText(GETText);
+
+
+        msghandler = new Handler() {
+            @Override
+            public void handleMessage(Message hdmsg) {
+                if (hdmsg.what == 11111) {
+                    show.append(hdmsg.obj.toString() + "\n");
+                }
+            }
+        };
 
         //폰트 크기 설정
         Button FontUp = (Button) findViewById(R.id.font_up);
@@ -132,7 +140,7 @@ public class StudentActivity extends AppCompatActivity {
 
                 //inputStream = socket.getInputStream();
                 output = new DataOutputStream(socket.getOutputStream());
-                RT = new ReceiveThread(socket);
+                RT = new SReceiveThread(socket);
                 RT.start();
 
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -147,11 +155,11 @@ public class StudentActivity extends AppCompatActivity {
         }
     }
 
-    class ReceiveThread extends Thread {
+    class SReceiveThread extends Thread {
         private Socket socket = null;
         DataInputStream input;
 
-        public ReceiveThread(Socket socket) {
+        public SReceiveThread(Socket socket) {
             this.socket = socket;
             try {
                 input = new DataInputStream(socket.getInputStream());
@@ -167,7 +175,7 @@ public class StudentActivity extends AppCompatActivity {
                         Log.d(ACTIVITY_SERVICE, "test");
 
                         Message hdmsg = msghandler.obtainMessage();
-                        hdmsg.what = 1111;
+                        hdmsg.what = 11111;
                         hdmsg.obj = msg;
                         msghandler.sendMessage(hdmsg);
                         Log.d(ACTIVITY_SERVICE, hdmsg.obj.toString());
