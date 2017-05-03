@@ -50,7 +50,7 @@ public class SelectSubActivity extends AppCompatActivity {
 
         IPadr = "223.194.153.40"; //아이피주소
         PortN =  "5000"; //포트번호
-        
+
 
         client_Server =new SocketClient(IPadr, PortN);
 
