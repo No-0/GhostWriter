@@ -55,14 +55,7 @@ public class SelectSubActivity extends AppCompatActivity {
         PortN =  "5000"; //포트번호
 
 
-        msghandler = new Handler() {
-            @Override
-            public void handleMessage(Message hdmsg) {
-                if (hdmsg.what == 1111) {
-                    show.append(hdmsg.obj.toString() + "\n");
-                }
-            }
-        };
+
 
         client_Server =new SocketClient(IPadr, PortN);
 
