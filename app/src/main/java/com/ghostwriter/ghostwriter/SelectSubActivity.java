@@ -116,7 +116,10 @@ public class SelectSubActivity extends AppCompatActivity {
                 output = new DataOutputStream(socket.getOutputStream());
                 RT = new ReceiveThread(socket);
                 RT.start();
-
+                switch(RT.getMsg()){
+                    case "선생님 국어" :
+                    case "선생님 수학" :
+                }
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
