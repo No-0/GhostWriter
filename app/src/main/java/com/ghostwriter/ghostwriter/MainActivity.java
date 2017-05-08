@@ -72,7 +72,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         threadList = new LinkedList<MainActivity.SocketClient>();
 
         IPadr = "223.194.156.153"; //아이피주소
-        
         PortN =  "5000"; //포트번호
 
 
