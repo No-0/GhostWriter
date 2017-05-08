@@ -15,6 +15,7 @@ class ReceiveThread extends Thread {
     Handler msghandler;
     private Socket msocket = null;
     DataInputStream input;
+    String msg;
 
     public ReceiveThread(Socket socket) {
         msocket = socket;
@@ -27,7 +28,7 @@ class ReceiveThread extends Thread {
     public void run() {
         try {
             while (input != null) {
-                String msg = input.readUTF();
+                msg = input.readUTF();
                 if (msg != null) {
                     Log.d(ACTIVITY_SERVICE, "test");
 
@@ -43,5 +44,9 @@ class ReceiveThread extends Thread {
             e.printStackTrace();
         }
     }
-
+    public String getMsg(){
+        if(msg == null)
+            msg = "";
+        return msg;
+    }
 }

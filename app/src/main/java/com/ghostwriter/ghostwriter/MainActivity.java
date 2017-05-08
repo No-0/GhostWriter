@@ -6,10 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -42,7 +45,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     SendThread2 send3;
     Socket socket;
     Socket socket2;
-
+    String Subject;
+    SendThread S;
 
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
@@ -149,22 +153,60 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         @Override
         public void run() {
             try {
-                socket2 = new Socket(ip, Integer.parseInt(port));
 
+                socket2 = new Socket(ip, Integer.parseInt(port));
+                if(socket2 == null)
                 output = new DataOutputStream(socket.getOutputStream());
 
 
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-                output.writeUTF(mac);
-                if(CR){
-                    socket.close();
-                    CR=false;
-                }
+                //output.writeUTF(mac);
+//                if(CR){
+//                    socket2.close();
+//                    CR=false;
+//                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    class SendThread extends Thread {
+        private Socket socket;
+        DataOutputStream output;
+
+        public SendThread(Socket socket) {
+            this.socket = socket;
+            try {
+                output = new DataOutputStream(socket.getOutputStream());
+
+            } catch (Exception e) {
+            }
+        }
+
+        public void run() {
+            try {
+                Log.d(ACTIVITY_SERVICE, "11111");
+                String mac = null;
+                WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                WifiInfo info = mng.getConnectionInfo();
+                mac = info.getMacAddress();
+
+                if (output != null) {
+                    if (Subject != null) {
+                        output.writeUTF(Subject);
+                        //onResults();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException npe)
+
+            {
+                npe.printStackTrace();
+            }
+
         }
     }
 
@@ -183,7 +225,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         public void run() {
             try {
-                Log.d(ACTIVITY_SERVICE, "11111");
+                Log.d(ACTIVITY_SERVICE, "111111");
                 String mac = null;
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
@@ -231,6 +273,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                     switch (SelectSubject.toString()) {
                         case "국어":
                             PortN = "5001";
+                            S = new SendThread(socket);
+                            Subject = "선생님 "+ SelectSubject.toString();
+                            S.start();
                             break;
                         case "수학":
                             PortN = "5002";
@@ -256,10 +301,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                             finish();
                             android.os.Process.killProcess(android.os.Process.myPid());
                         }
+
+
+
                     }
+
+
+
                     lesson_Server = new SocketClient2(IPadr, PortN);
-                    threadList2.add(lesson_Server);
                     lesson_Server.start();
+                    Log.i(PortN,"port");
+                    //threadList2.add(lesson_Server);
+
 
                     Check = true;
                 }
@@ -380,9 +433,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         findViewById(R.id.Button).performClick();
         send3= new SendThread2(socket2);
+        S=new SendThread(socket);
         send3.start();
+
         try {
             send3.join();
+            S.start();
+            S.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -392,7 +449,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
 
 
+
     }
+
 
     @Override
     public void onAudioLevel(float v) {
