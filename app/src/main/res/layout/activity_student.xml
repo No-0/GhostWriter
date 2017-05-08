@@ -75,7 +75,7 @@
         </ScrollView>
 
         <TextView
-            android:id="@+id/SchoolName"
+            android:id="@+id/SubjectName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/scrollView2"
@@ -83,17 +83,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="10dp"
             android:text="SchoolName"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/StudentName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/SchoolName"
-            android:layout_alignBottom="@+id/SchoolName"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="StudentName"
+            android:textColor="@android:color/background_light"
             android:textSize="20sp" />
 
 

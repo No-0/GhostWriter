@@ -29,7 +29,7 @@ public class SelectActivity extends AppCompatActivity {
         SButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SelectSubActivity.class);
                 startActivity(intent);
             }
         });

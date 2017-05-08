@@ -20,7 +20,6 @@
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/Grade"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="85dp"
             app:srcCompat="@drawable/title"
@@ -32,56 +31,43 @@
             android:id="@+id/textView2"
             android:layout_width="30dp"
             android:layout_height="20dp"
-            android:text="반"
+            android:layout_alignTop="@+id/Subject"
+            android:layout_marginEnd="36dp"
+            android:layout_toStartOf="@+id/Subject"
+            android:text="과목"
             tools:layout_editor_absoluteX="71dp"
-            tools:layout_editor_absoluteY="273dp"
-            android:layout_alignTop="@+id/Class"
-            android:layout_toStartOf="@+id/Class"
-            android:layout_marginEnd="36dp" />
-
-        <TextView
-            android:id="@+id/textview"
-            android:layout_width="30dp"
-            android:layout_height="20dp"
-            android:text="학년"
-            tools:layout_editor_absoluteX="71dp"
-            tools:layout_editor_absoluteY="217dp"
-            android:layout_below="@+id/imageView2"
-            android:layout_alignStart="@+id/textView2" />
+            tools:layout_editor_absoluteY="273dp" />
 
         <Spinner
-            android:id="@+id/Class"
+            android:id="@+id/Subject"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/Button"
-            android:layout_alignStart="@+id/Grade"
-            android:layout_marginBottom="70dp"
-            android:entries="@array/Class"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="61dp"
+            android:entries="@array/Subject"
             tools:layout_editor_absoluteX="125dp"
             tools:layout_editor_absoluteY="271dp" />
-
-        <Spinner
-            android:id="@+id/Grade"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="29dp"
-            android:entries="@array/Grade"
-            tools:layout_editor_absoluteX="125dp"
-            tools:layout_editor_absoluteY="209dp"
-            android:layout_above="@+id/textView2"
-            android:layout_alignStart="@+id/Button" />
 
         <Button
             android:id="@+id/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="143dp"
+            android:layout_marginBottom="131dp"
             android:onClick="bHandler"
             android:text="수업시작"
             tools:layout_editor_absoluteX="148dp"
             tools:layout_editor_absoluteY="358dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수업종료"
+            android:layout_below="@+id/Subject"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="82dp" />
 
     </RelativeLayout>
 
