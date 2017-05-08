@@ -45,12 +45,13 @@ public class StudentActivity extends AppCompatActivity {
     TextView show;
     Handler msghandler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
-        IPadr = "223.194.153.40"; //아이피주소
+        IPadr = "223.194.159.193"; //아이피주소
 
         show = (TextView) findViewById(R.id.show);
 
@@ -66,6 +67,8 @@ public class StudentActivity extends AppCompatActivity {
                 setStatusBarColor(this,Color.RED);
                 Box.setColorFilter(Color.RED);
                 PortN = "5001";
+
+
             }
             break;
             case "수학": {
@@ -116,6 +119,10 @@ public class StudentActivity extends AppCompatActivity {
                 Process.killProcess(Process.myPid());
             }
         }
+        client_Server = new SocketClient(IPadr,PortN);
+        client_Server.start();
+        RT = new SReceiveThread(socket);
+        RT.start();
 
         SName.setText(GETText);
 
@@ -124,7 +131,7 @@ public class StudentActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message hdmsg) {
                 if (hdmsg.what == 11111) {
-                    show.append(hdmsg.obj.toString() + "\n");
+                    show.append(hdmsg.obj.toString());
                 }
             }
         };
