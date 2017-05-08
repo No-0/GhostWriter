@@ -28,6 +28,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -45,6 +46,8 @@ public class StudentActivity extends AppCompatActivity {
     TextView show;
     Handler msghandler;
 
+    LinkedList<SocketClient> threadList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,29 +64,43 @@ public class StudentActivity extends AppCompatActivity {
 
         ImageView Box = (ImageView) findViewById(R.id.imageView);
         SName = (TextView) findViewById(R.id.SubjectName);
+
         switch (GETText) {//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
             case "국어": {
                 setStatusBarColor(this,Color.RED);
                 Box.setColorFilter(Color.RED);
                 PortN = "5001";
+                client_Server = new SocketClient(IPadr, PortN);
+                threadList.add(client_Server);
+                client_Server.start();
+
             }
             break;
             case "수학": {
                 setStatusBarColor(this, Color.BLACK);
                 Box.setColorFilter(Color.BLACK);
                 PortN = "5002";
+                client_Server = new SocketClient(IPadr, PortN);
+                threadList.add(client_Server);
+                client_Server.start();
             }
             break;
             case "국사": {
                 setStatusBarColor(this, Color.GRAY);
                 Box.setColorFilter(Color.GRAY);
                 PortN = "5003";
+                client_Server = new SocketClient(IPadr, PortN);
+                threadList.add(client_Server);
+                client_Server.start();
             }
             break;
             case "사회문화": {
                 setStatusBarColor(this, Color.GREEN);
                 Box.setColorFilter(Color.GREEN);
                 PortN = "5004";
+                client_Server = new SocketClient(IPadr, PortN);
+                threadList.add(client_Server);
+                client_Server.start();
             }
             break;
             case "화학": {

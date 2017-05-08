@@ -75,7 +75,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.156.153"; //아이피주소
+        IPadr = "223.194.159.193"; //아이피주소
         PortN =  "5000"; //포트번호
 
 
@@ -274,7 +274,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                         case "국어":
                             PortN = "5001";
                             S = new SendThread(socket);
-                            Subject = "선생님 "+ SelectSubject.toString();
+                            Subject =  SelectSubject.toString();
                             S.start();
                             break;
                         case "수학":
