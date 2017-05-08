@@ -20,8 +20,6 @@
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="85dp"
             app:srcCompat="@drawable/title"
             tools:layout_editor_absoluteX="89dp"
 
@@ -43,11 +41,11 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_above="@+id/Button"
+            android:layout_alignEnd="@+id/button2"
             android:layout_marginBottom="61dp"
             android:entries="@array/Subject"
             tools:layout_editor_absoluteX="125dp"
-            tools:layout_editor_absoluteY="271dp"
-            android:layout_alignEnd="@+id/button2" />
+            tools:layout_editor_absoluteY="271dp" />
 
         <Button
             android:id="@+id/Button"
@@ -69,6 +67,15 @@
             android:layout_below="@+id/Subject"
             android:layout_marginEnd="82dp"
             android:text="수업종료" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Subject"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="52dp"
+            android:text="수업중이 아닙니다" />
 
     </RelativeLayout>
 

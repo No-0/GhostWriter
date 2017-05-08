@@ -16,6 +16,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
 import net.daum.mf.speech.api.SpeechRecognizerManager;
@@ -47,6 +49,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     Socket socket2;
     String Subject;
     SendThread S;
+    TextView text;
 
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
@@ -61,7 +64,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        text = (TextView)findViewById(R.id.status);
         ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
         pictureim.setImageResource(R.drawable.title);
 
@@ -267,6 +270,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         if(id == R.id.Button){
             if(PermissionUtils.checkAudioRecordPermission(this)) {
+                text.setText("수업중입니다");
                 findViewById(R.id.Button).setEnabled(false);// 수업시작 버튼 비활성화
                 findViewById(R.id.button2).setEnabled(true);
                 if(!Check) {
@@ -330,6 +334,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
 
         if(id == R.id.button2){
+            text.setText("수업중이 아닙니다");
             findViewById(R.id.button2).setEnabled(false);
             CR=true;
             client.cancelRecording();
