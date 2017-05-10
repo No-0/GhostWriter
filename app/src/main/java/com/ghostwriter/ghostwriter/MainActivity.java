@@ -6,13 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -35,7 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
 
     Object SelectSubject;
-    String kkk;
+   String kkk;
     String IPadr;
     String PortN;
 
@@ -122,6 +119,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         public void run() {
             try {
                 socket = new Socket(ip, Integer.parseInt(port));
+                //client = new SocketChannel(ip, Integer.parseInt(port));
 
                 output = new DataOutputStream(socket.getOutputStream());
 
