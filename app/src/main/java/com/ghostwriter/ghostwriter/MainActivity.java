@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,8 +32,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static com.ghostwriter.ghostwriter.R.id.toolbar;
 
-public class MainActivity extends Activity implements View.OnClickListener, SpeechRecognizeListener {
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SpeechRecognizeListener {
     private SpeechRecognizerClient client;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
@@ -42,6 +48,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     boolean CR = false;
     boolean Check = false;
 
+
     SocketClient client_Server;
     SocketClient2 lesson_Server;
     SendThread2 send3;
@@ -50,6 +57,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     String Subject;
     SendThread S;
     TextView text;
+    Toolbar mToolbar;
 
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
@@ -63,6 +71,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         text = (TextView)findViewById(R.id.status);
         ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
@@ -100,6 +110,21 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
             }
         });
 
+        // Set a toolbar to  replace to action bar
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {//툴바 뒤로가기
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

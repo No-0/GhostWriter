@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context="com.ghostwriter.ghostwriter.SelectActivity">
 
     <RelativeLayout
@@ -16,9 +19,9 @@
             android:id="@+id/Teacher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/imageView3"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="176dp"
+            android:layout_marginTop="49dp"
             android:text="Teacher" />
 
         <Button
@@ -29,5 +32,25 @@
             android:layout_below="@+id/Teacher"
             android:layout_marginTop="111dp"
             android:text="Student" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/title"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="14dp" />
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
