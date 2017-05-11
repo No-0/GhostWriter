@@ -6,22 +6,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
 import net.daum.mf.speech.api.SpeechRecognizerManager;
 import net.daum.mf.speech.api.impl.util.PermissionUtils;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -33,7 +32,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     private SpeechRecognizerClient client;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
-
+    SpeechRecogListner List = new SpeechRecogListner();
+    SpeechRecognizerClient client2;
     Object SelectSubject;
     String kkk;
     String IPadr;
@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     String Subject;
     SendThread S;
     TextView text;
-
+    Toast toast;
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
             setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
@@ -59,6 +59,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     LinkedList<SocketClient> threadList;
     LinkedList<SocketClient2> threadList2;
 
+    String Err="";
+
+    StartThread STTT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.156.153"; //아이피주소
+        IPadr = "223.194.153.122"; //아이피주소
         PortN =  "5000"; //포트번호
 
 
@@ -213,6 +216,28 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         }
     }
 
+    class StartThread extends Thread{
+        String Er;
+        SpeechRecognizerClient Cl;
+        SpeechRecognizeListener SRL;
+        public StartThread(String err, SpeechRecognizerClient client, SpeechRecognizeListener Listener){
+            Er = err;
+            this.Cl = client;
+            SRL = Listener;
+        }
+        public void StartRecodingM(){
+            Cl.stopRecording();
+            Cl.setSpeechRecognizeListener(SRL);
+            Cl.startRecording(true);
+        }
+        @Override
+        public void run() {
+            while (true) {
+                if (Er.equals("Received Nack - no result"))
+                    StartRecodingM();
+            }
+        }
+    }
     class SendThread2 extends Thread {
         private Socket socket;
         DataOutputStream output;
@@ -278,7 +303,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                         case "국어":
                             PortN = "5001";
                             S = new SendThread(socket);
-                            Subject = "선생님 "+ SelectSubject.toString();
+                            Subject = SelectSubject.toString();
                             S.start();
                             break;
                         case "수학":
@@ -323,11 +348,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
 
                     CR = false;
+
                     client = builder1.build();
                     client.setSpeechRecognizeListener(this);
-                    client.startRecording(true);
+
+
+                client2 =  builder1.build();
+                client2.setSpeechRecognizeListener(List);
+
+                //                StartThread sTT = new StartThread(Err, client, this);
+//                if(!sTT.isAlive()) {
+//                    sTT.start();
+//                }
+              //  ErrStateStatus(true, MainActivity.this, client);
 
                     Log.i("startRe", "" + i);
+
 
             }
         }
@@ -411,7 +447,29 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
     @Override
     public void onError(int i, String s) {
+        final String Ermsg = s;
+        if(s.equals("Received Nack - no result"))
+            runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Err = Ermsg;
+                client.stopRecording();
+                if(CR == false)
+                    client.startRecording(true);
+            }
+        });
 
+    }
+
+    private void ErrStateStatus(boolean b, SpeechRecognizeListener lis, SpeechRecognizerClient cli) {
+//        Button but = (Button)findViewById(R.id.Button);
+//        but.setEnabled(b);
+//        toast.makeText(this,"5초동안 말하지 않아 종료되었습니다.",Toast.LENGTH_LONG).show();
+
+        SpeechRecognizeListener l = lis;
+        SpeechRecognizerClient cl = cli;
+        cli.stopRecording();
+       cli.startRecording(true);
     }
 
     @Override
@@ -465,10 +523,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
     @Override
     public void onFinished() {
-        if(CR ==false)
-        client.startRecording(true);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(CR ==false)
+                    client.startRecording(true);
+            }
+        });
+
 
     }
+
+
 
 }
 class Strcontroler{
