@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+
+    <!-- This preference simply launches an intent when selected. Use this UI sparingly, per
+         design guidelines. -->
+    <ListPreference
+        android:defaultValue="180"
+        android:entries="@array/pref_sync_frequency_titles"
+        android:entryValues="@array/pref_sync_frequency_values"
+        android:key="sync_frequency"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="환경설정" />
+
+    <Preference android:title="개발자:  <Team> GhostWriter  허영호 최다영 이용관 신지수">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="현재버전 v.1.0 ">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="새로운 버전 확인">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="공지 사항">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="알림">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="이용약관">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="개인정보처리방침">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="자주묻는 질문">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+    <Preference
+        android:id="@+id/preference8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="고객지원 및 문의">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+    <Preference
+        android:id="@+id/preference9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="동기화">
+        <intent android:action="android.settings.SYNC_SETTINGS" />
+    </Preference>
+
+
+
+
+
+
+</PreferenceScreen>

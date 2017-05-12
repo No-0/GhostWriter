@@ -22,6 +22,7 @@ import net.daum.mf.speech.api.impl.util.PermissionUtils;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -32,9 +33,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
 
     Object SelectSubject;
-   String kkk;
+
+    byte[] bytes;
+    ByteBuffer buf;
+
+    String kkk;
     String IPadr;
     String PortN;
+
+
+
+
 
     boolean CR = false;
     boolean Check = false;
@@ -75,7 +84,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.156.153"; //아이피주소
+        IPadr = "223.194.153.41"; //아이피주소
         PortN =  "5000"; //포트번호
 
 
@@ -109,7 +118,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
 
         private DataOutputStream output = null;
 
-        public SocketClient(String ip, String port) {
+        public SocketClient(String rfbip, String port) {
             threadAlive = true;
             this.ip = ip;
             this.port = port;
@@ -233,8 +242,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
                 mac = info.getMacAddress();
 
                 if (output != null) {
-                    if (kkk != null) {
-                        output.writeUTF(mac + " : " + kkk);
+                    if (buf != null) {
+                        output.writeUTF(mac + " : " + buf);
                         //onResults();
                     }
                 }
@@ -433,6 +442,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Spee
         strcontroler.Thrcounter = i;
 
         kkk = strcontroler.str;
+        bytes = kkk.getBytes();
+        buf = ByteBuffer.wrap(bytes);
 
         findViewById(R.id.Button).performClick();
         send3= new SendThread2(socket2);

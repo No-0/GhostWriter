@@ -51,7 +51,7 @@ public class StudentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
-        IPadr = "223.194.159.193"; //아이피주소
+        IPadr = "223.194.153.41"; //아이피주소
 
         show = (TextView) findViewById(R.id.show);
 
