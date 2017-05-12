@@ -1,7 +1,6 @@
 package com.ghostwriter.ghostwriter;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -10,15 +9,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
-import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +43,7 @@ public class StudentActivity extends AppCompatActivity {
     Socket socket;
     TextView show;
     Handler msghandler;
+    Toolbar mToolbar;
 
 
     @Override
@@ -55,59 +55,55 @@ public class StudentActivity extends AppCompatActivity {
 
         show = (TextView) findViewById(R.id.show);
 
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
 
         GETText = ((SelectSubActivity) SelectSubActivity.mContext).GetText();
 
-        Log.i(this.GETText, "===============");
 
-        ImageView Box = (ImageView) findViewById(R.id.imageView);
-        SName = (TextView) findViewById(R.id.SubjectName);
         switch (GETText) {//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
             case "국어": {
-                setStatusBarColor(this,Color.RED);
-                Box.setColorFilter(Color.RED);
+                setStatusBarColor(this,0xffcc0000);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));
                 PortN = "5001";
 
 
             }
             break;
             case "수학": {
-                setStatusBarColor(this, Color.BLACK);
-                Box.setColorFilter(Color.BLACK);
+                setStatusBarColor(this,0xffcccc00);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcccc00));
                 PortN = "5002";
             }
             break;
             case "국사": {
-                setStatusBarColor(this, Color.GRAY);
-                Box.setColorFilter(Color.GRAY);
+                setStatusBarColor(this,0xff5fd700);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff5fd700));
                 PortN = "5003";
             }
             break;
             case "사회문화": {
-                setStatusBarColor(this, Color.GREEN);
-                Box.setColorFilter(Color.GREEN);
+                setStatusBarColor(this,0xFF5F00FF);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF5F00FF));
                 PortN = "5004";
             }
             break;
             case "화학": {
-                setStatusBarColor(this, Color.CYAN);
-                Box.setColorFilter(Color.CYAN);
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                SName.setTextColor(Color.BLACK);
+                setStatusBarColor(this,0xffcc00cc);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc00cc));
                 PortN = "5005";
             }
             break;
             case "생명과학": {
-                setStatusBarColor(this, Color.YELLOW);
-                Box.setColorFilter(Color.YELLOW);
-                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                SName.setTextColor(Color.BLACK);
+                setStatusBarColor(this,0xff878787);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff878787));
                 PortN = "5006";
             }
             break;
             case "물리": {
-                setStatusBarColor(this, Color.MAGENTA);
-                Box.setColorFilter(Color.MAGENTA);
+                setStatusBarColor(this,0xffff5fff);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffff5fff));
                 PortN = "5007";
             }
             break;
@@ -119,13 +115,16 @@ public class StudentActivity extends AppCompatActivity {
                 Process.killProcess(Process.myPid());
             }
         }
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
+        getSupportActionBar().setTitle(GETText);//타이틀 과목명 변경
+
+
         client_Server = new SocketClient(IPadr,PortN);
         client_Server.start();
         RT = new SReceiveThread(socket);
         RT.start();
-
-        SName.setText(GETText);
-
 
         msghandler = new Handler() {
             @Override
@@ -165,7 +164,22 @@ public class StudentActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {//툴바 뒤로가기
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
     class SocketClient extends Thread {
@@ -240,7 +254,12 @@ public class StudentActivity extends AppCompatActivity {
             }
         }
 
+
+
     }
+
+
+
 
     public static void setStatusBarColor(Activity activity, int color) {// 상태바 색상 변경함수
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

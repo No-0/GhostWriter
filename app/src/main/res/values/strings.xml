@@ -34,5 +34,24 @@
     <string name="man_dialog_bright">남자 대화체</string>
     <string name="woman_dialog_bright">여자 대화체</string>
     <string name="speed_select_title">속도선택 (Newtone Talk1 만 변경 가능)</string>
+    <string-array name="entries_color">
 
+        <item>Red</item>
+
+        <item>Green</item>
+
+        <item>Blue</item>
+
+    </string-array>
+
+
+    <string-array name="entryValues_color">
+
+        <item>FFFF0000</item>
+
+        <item>FF00FF00</item>
+
+        <item>FF0000FF</item>
+
+    </string-array>
 </resources>
