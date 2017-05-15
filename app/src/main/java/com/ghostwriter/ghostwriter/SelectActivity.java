@@ -1,12 +1,9 @@
 package com.ghostwriter.ghostwriter;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +22,8 @@ public class SelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
-
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         TButton = (Button)findViewById(R.id.Teacher);
         TButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +68,8 @@ public class SelectActivity extends AppCompatActivity {
                 Toast.makeText(this, "1111",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.second:
-                Toast.makeText(this, "2222",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), settingActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;

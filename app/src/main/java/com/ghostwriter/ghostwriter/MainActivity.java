@@ -1,14 +1,12 @@
 package com.ghostwriter.ghostwriter;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +20,8 @@ import net.daum.mf.speech.api.SpeechRecognizerClient;
 import net.daum.mf.speech.api.SpeechRecognizerManager;
 import net.daum.mf.speech.api.impl.util.PermissionUtils;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -67,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         text = (TextView)findViewById(R.id.status);
         ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.156.153"; //아이피주소
+        IPadr = "223.194.152.180"; //아이피주소
         PortN =  "5000"; //포트번호
 
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String mac;
 
 
-        private DataOutputStream output = null;
+        private PrintWriter output = null;
 
         public SocketClient(String ip, String port) {
             threadAlive = true;
@@ -142,13 +142,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 socket = new Socket(ip, Integer.parseInt(port));
 
-                output = new DataOutputStream(socket.getOutputStream());
-
+                output = new PrintWriter(socket.getOutputStream(), true);
 
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-                output.writeUTF(mac);
+                output.println(mac);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -164,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String mac;
 
 
-        private DataOutputStream output = null;
+        private PrintWriter output = null;
 
         public SocketClient2(String ip, String port) {
             threadAlive = true;
@@ -178,13 +177,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 socket2 = new Socket(ip, Integer.parseInt(port));
                 if(socket2 == null)
-                output = new DataOutputStream(socket.getOutputStream());
+                    output =  new PrintWriter(socket.getOutputStream(), true);
 
 
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-                //output.writeUTF(mac);
+                //output.println(mac);
 //                if(CR){
 //                    socket2.close();
 //                    CR=false;
@@ -196,20 +195,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     class SendThread extends Thread {
         private Socket socket;
-        DataOutputStream output;
+        PrintWriter output;
 
         public SendThread(Socket socket) {
             this.socket = socket;
             try {
-                output = new DataOutputStream(socket.getOutputStream());
+                output =  new PrintWriter(socket.getOutputStream(), true);
+
+
 
             } catch (Exception e) {
             }
         }
-
         public void run() {
-            try {
-                Log.d(ACTIVITY_SERVICE, "11111");
+            try {Log.d(ACTIVITY_SERVICE, "11111");
+
                 String mac = null;
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
@@ -217,12 +217,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (output != null) {
                     if (Subject != null) {
-                        output.writeUTF(Subject);
+                        output.println(Subject);
                         //onResults();
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (NullPointerException npe)
 
             {
@@ -234,12 +232,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     class SendThread2 extends Thread {
         private Socket socket;
-        DataOutputStream output;
+        PrintWriter output;
 
         public SendThread2(Socket socket) {
             this.socket = socket;
             try {
-                output = new DataOutputStream(socket.getOutputStream());
+                output =  new PrintWriter(socket.getOutputStream(), true);
+
+
 
             } catch (Exception e) {
             }
@@ -255,14 +255,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (output != null) {
                     if (kkk != null) {
-                        output.writeUTF(mac + " : " + kkk);
+                        output.println(kkk);
                         //onResults();
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (NullPointerException npe)
-
             {
                 npe.printStackTrace();
             }
@@ -366,46 +363,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            ArrayList<String> results = data.getStringArrayListExtra(VoiceRecoActivity.EXTRA_KEY_RESULT_ARRAY);
 
-            final StringBuilder builder = new StringBuilder();
-            for (String result : results) {
-                builder.append(result);
-                builder.append("\n");
-            }
-
-            new AlertDialog.Builder(this).
-                    setMessage(builder.toString()).
-                    setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).
-                    show();
-        }
-        else if (requestCode == RESULT_CANCELED) {
-            // 음성인식의 오류 등이 아니라 activity의 취소가 발생했을 때.
-            if (data == null) {
-                return;
-            }
-
-            int errorCode = data.getIntExtra(VoiceRecoActivity.EXTRA_KEY_ERROR_CODE, -1);
-            String errorMsg = data.getStringExtra(VoiceRecoActivity.EXTRA_KEY_ERROR_MESSAGE);
-
-            if (errorCode != -1 && !TextUtils.isEmpty(errorMsg)) {
-                new AlertDialog.Builder(this).
-                        setMessage(errorMsg).
-                        setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).
-                        show();
-            }
-        }
     }
 
     @Override

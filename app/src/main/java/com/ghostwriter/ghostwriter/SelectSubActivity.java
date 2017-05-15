@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -34,7 +35,7 @@ public class SelectSubActivity extends AppCompatActivity {
     TextView show;
     Handler msghandler;
 
-    String IPadr = "223.194.159.193"; //아이피주소
+    String IPadr = "223.194.152.180"; //아이피주소
     String PortN =  "5000"; //포트번호
 
 
@@ -45,6 +46,8 @@ public class SelectSubActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_sub);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         mContext = this;
 
