@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,10 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class StudentActivity extends AppCompatActivity {
@@ -50,8 +50,10 @@ public class StudentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
-        IPadr = "223.194.159.193"; //아이피주소
+        IPadr = "223.194.152.180"; //아이피주소
 
         show = (TextView) findViewById(R.id.show);
 
@@ -189,7 +191,7 @@ public class StudentActivity extends AppCompatActivity {
         String mac;
 
         //InputStream inputStream = null;
-        OutputStream outputStream = null;
+        BufferedReader outputStream = null;
         BufferedReader br = null;
 
         private DataOutputStream output = null;
@@ -224,12 +226,13 @@ public class StudentActivity extends AppCompatActivity {
 
     class SReceiveThread extends Thread {
         private Socket socket = null;
-        DataInputStream input;
+        BufferedReader input;
 
         public SReceiveThread(Socket socket) {
             this.socket = socket;
             try {
-                input = new DataInputStream(socket.getInputStream());
+                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+;
             } catch (Exception e) {
             }
         }
@@ -237,7 +240,7 @@ public class StudentActivity extends AppCompatActivity {
         public void run() {
             try {
                 while (input != null) {
-                    String msg = input.readUTF();
+                    String msg = input.readLine();
                     if (msg != null) {
                         Log.d(ACTIVITY_SERVICE, "test");
 
