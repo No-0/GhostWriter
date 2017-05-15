@@ -366,46 +366,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            ArrayList<String> results = data.getStringArrayListExtra(VoiceRecoActivity.EXTRA_KEY_RESULT_ARRAY);
-
-            final StringBuilder builder = new StringBuilder();
-            for (String result : results) {
-                builder.append(result);
-                builder.append("\n");
-            }
-
-            new AlertDialog.Builder(this).
-                    setMessage(builder.toString()).
-                    setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).
-                    show();
-        }
-        else if (requestCode == RESULT_CANCELED) {
-            // 음성인식의 오류 등이 아니라 activity의 취소가 발생했을 때.
-            if (data == null) {
-                return;
-            }
-
-            int errorCode = data.getIntExtra(VoiceRecoActivity.EXTRA_KEY_ERROR_CODE, -1);
-            String errorMsg = data.getStringExtra(VoiceRecoActivity.EXTRA_KEY_ERROR_MESSAGE);
-
-            if (errorCode != -1 && !TextUtils.isEmpty(errorMsg)) {
-                new AlertDialog.Builder(this).
-                        setMessage(errorMsg).
-                        setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).
-                        show();
-            }
-        }
     }
 
     @Override
