@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean CR = false;
     boolean Check = false;
 
+    Toast toast;
 
     SocketClient client_Server;
     SocketClient2 lesson_Server;
@@ -382,6 +385,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onError(int i, String s) {
+        final String Ermsg = s;
+        if(Ermsg.equals("Received Nack - no result"))
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ErrStateStatus(true);
+
+                }
+            });
+
+    }
+
+    private void ErrStateStatus(boolean b) {
+        Button but = (Button)findViewById(R.id.Button);
+        but.setEnabled(b);
+        toast.makeText(this,"5초동안 말하지 않아 종료되었습니다.", Toast.LENGTH_LONG).show();
+
 
     }
 
