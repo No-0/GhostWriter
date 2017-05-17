@@ -4,13 +4,15 @@ import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,15 +33,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SpeechRecognizerClient client;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
-
+    Handler handler;
     Object SelectSubject;
     String kkk;
     String IPadr;
     String PortN;
 
     boolean CR = false;
-    boolean Check = false;
+    boolean Check = true;
 
+    ClickbuttonThread CBT;
 
     SocketClient client_Server;
     SocketClient2 lesson_Server;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SendThread S;
     TextView text;
     Toolbar mToolbar;
-
+    Button button;
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
             setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
@@ -63,16 +66,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         text = (TextView)findViewById(R.id.status);
         ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
         pictureim.setImageResource(R.drawable.title);
 
-        SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
         findViewById(R.id.Button).setOnClickListener(this);
 
@@ -82,9 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.152.180"; //아이피주소
+        IPadr = "223.194.153.91"; //아이피주소
         PortN =  "5000"; //포트번호
-
+        Check = false;
 
         client_Server = new SocketClient(IPadr, PortN);
         threadList.add(client_Server);
@@ -103,11 +104,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
+        button = (Button)findViewById(R.id.Button);
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message hdmsg) {
+                if (hdmsg.what == 4444) {
+                    button.performClick();
+                }
+            }
+        };
+//        CBT = new ClickbuttonThread(button,Check, handler);
+//        CBT.run();
         // Set a toolbar to  replace to action bar
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 
@@ -334,7 +346,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //threadList2.add(lesson_Server);
 
 
-                    Check = true;
+                    Check = false;
+
                 }
 
 
@@ -354,6 +367,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.button2).setEnabled(false);
             CR=true;
             client.cancelRecording();
+            Check = true;
 
             findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
 
@@ -382,10 +396,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onError(int i, String s) {
+        final String Ermsg = s;
+        if(Ermsg.equals("Received Nack - no result"))
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Message hdmsg = handler.obtainMessage();
+                    hdmsg.what = 4444;
+                    hdmsg.obj = "onError";
+                    handler.sendMessage(hdmsg);
+                }
+            });
+    }
+    public class ClickbuttonThread extends Thread{
+        Button but;
+        boolean Checkt;
+        Handler msghandler;
+        public ClickbuttonThread(Button but, boolean CHeck,  Handler handeler){
+            this.but = but;
+            this.Checkt = CHeck;
+            this.msghandler = handeler;
+        }
 
+
+        @Override
+        public void run() {
+            while(true){
+
+                if(but.isEnabled() == true&& !Checkt){
+                    Message hdmsg = handler.obtainMessage();
+                    hdmsg.what = 4444;
+                    hdmsg.obj = "onError";
+                    handler.sendMessage(hdmsg);
+            }
+            }
+        }
     }
 
-    @Override
+    private void ErrStateStatus(boolean b, SpeechRecognizeListener lis, SpeechRecognizerClient cli) {
+        Button but = (Button)findViewById(R.id.Button);
+        but.setEnabled(b);
+//        toast.makeText(this,"5초동안 말하지 않아 종료되었습니다.",Toast.LENGTH_LONG).show();
+
+    }    @Override
     public void onPartialResult(String s) {
 
     }
