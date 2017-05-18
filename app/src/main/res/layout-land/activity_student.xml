@@ -6,34 +6,35 @@
     android:layout_height="match_parent"
     tools:context="com.ghostwriter.ghostwriter.StudentActivity">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="1303dp"
+        android:layout_height="37dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="-1dp" />
+
     <RelativeLayout
 
         android:id="@+id/RLayout"
-        android:layout_width="360dp"
-        android:layout_height="618dp"
+        android:layout_width="598dp"
+        android:layout_height="698dp"
         tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="2dp">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="-1dp" />
+        tools:layout_editor_absoluteY="44dp">
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="27dp"
-            android:layout_below="@+id/toolbar"
-            android:layout_alignParentStart="true">
+            android:layout_above="@+id/font_down"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="405dp"
+            android:layout_marginEnd="7dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,19 +57,20 @@
             android:id="@+id/font_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="13dp"
+            android:layout_marginTop="267dp"
             android:text="font_down"
-            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="14dp"
+            android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/font_up" />
 
         <Button
             android:id="@+id/font_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="font_up"
             android:layout_alignBaseline="@+id/font_down"
             android:layout_alignBottom="@+id/font_down"
-            android:layout_alignParentEnd="true"
-            android:text="font_up" />
+            android:layout_alignParentEnd="true" />
 
 
     </RelativeLayout>

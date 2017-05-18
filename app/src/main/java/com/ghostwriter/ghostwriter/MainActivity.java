@@ -1,23 +1,19 @@
 package com.ghostwriter.ghostwriter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Vibrator;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
@@ -35,16 +31,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SpeechRecognizerClient client;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
-    Handler handler;
+
     Object SelectSubject;
     String kkk;
     String IPadr;
     String PortN;
 
-    int CheckC = 0;
-
     boolean CR = false;
-    boolean Check = true;
+    boolean Check = false;
 
 
     SocketClient client_Server;
@@ -55,10 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String Subject;
     SendThread S;
     TextView text;
-    TextView CheckStatus;
-
     Toolbar mToolbar;
-    Button button;
+
     SpeechRecognizerClient.Builder builder1 = new SpeechRecognizerClient.Builder().
             setApiKey(APIKEY).
             setServiceType(SpeechRecognizerClient.SERVICE_TYPE_DICTATION)
@@ -71,14 +63,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SpeechRecognizerManager.getInstance().initializeLibrary(this);
-        CheckStatus = (TextView)findViewById(R.id.chackstatus);
 
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         text = (TextView)findViewById(R.id.status);
         ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
         pictureim.setImageResource(R.drawable.title);
 
+        SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
         findViewById(R.id.Button).setOnClickListener(this);
 
@@ -88,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.153.91"; //아이피주소
+        IPadr = "223.194.152.180"; //아이피주소
         PortN =  "5000"; //포트번호
-        Check = false;
+
 
         client_Server = new SocketClient(IPadr, PortN);
         threadList.add(client_Server);
@@ -109,14 +103,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-        button = (Button)findViewById(R.id.Button);
-
 
         // Set a toolbar to  replace to action bar
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
     }
 
@@ -275,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
 ////////////////////////////////////////////////////////음성인식관련/////////////////////////////////////////////
     @Override
     public void onDestroy() {
@@ -340,9 +330,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.i(PortN,"port");
                     //threadList2.add(lesson_Server);
 
-                    CheckStatus = (TextView)findViewById(R.id.chackstatus);
-                    Check = false;
 
+                    Check = true;
                 }
 
 
@@ -353,7 +342,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     Log.i("startRe", "" + i);
 
-
             }
         }
 
@@ -363,14 +351,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.button2).setEnabled(false);
             CR=true;
             client.cancelRecording();
-            Check = true;
 
             findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
 
         }
     }
-
-
 
 
     @Override
@@ -435,12 +420,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final StringBuilder builder = new StringBuilder();
 
         ArrayList<String> Text = bundle.getStringArrayList(SpeechRecognizerClient.KEY_RECOGNITION_RESULTS);
+        ArrayList<Integer> confs = bundle.getIntegerArrayList(SpeechRecognizerClient.KEY_CONFIDENCE_VALUES);
 
 
         Strcontroler strcontroler = new Strcontroler();
         strcontroler.str = Text.get(0);
 
-
+        strcontroler.Thrcounter = i;
 
         kkk = strcontroler.str;
 
@@ -458,6 +444,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         Log.i("str", strcontroler.str);             //  -->서버로 보내질 음성인식 스트링
+        Log.i("i", ""+strcontroler.Thrcounter);    //  -->서버로 보내질 음성인식 순서
+
 
 
 
@@ -479,5 +467,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 }
 class Strcontroler{
     String str;
+    int Thrcounter;
 
 }

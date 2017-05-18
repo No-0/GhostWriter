@@ -3,37 +3,43 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Category 1 제목"
-        android:key="category1"
-        android:summary="Category 1에 대한 자세한 설명: 표시 안됨"
-        android:enabled="false">
 
+    <PreferenceCategory android:title="Ghostwriter 정보">
 
-        <PreferenceScreen android:title="Sub Preferences 가기"
+        <PreferenceScreen android:title="버전"
             android:key="preference_sub"
-            android:summary="클릭하면 Sub Preferences가 호출 됩니다">
+            android:summary="v1.0">
+        </PreferenceScreen>
 
-            <Preference android:title="Sub CheckBox Preference"
+        <PreferenceScreen android:title="새로운 버전 확인"
+            android:key="preference_sub"
+            android:summary="최신버전">
+        </PreferenceScreen>
+
+
+        <PreferenceScreen android:title="다음 뉴톤API"
+            android:key="preference_sub">
+                <intent
+                    android:targetClass="com.ghostwriter.ghostwriter.OpenSActivity"
+                    android:targetPackage="com.ghostwriter.ghostwriter" />
+
+        </PreferenceScreen>
+
+        <PreferenceScreen android:title="개발자 정보"
+            android:key="preference_sub">
+
+            <Preference android:title="Team.Ghostwriter"
                 android:key="sub_summary"
-                android:summary="Check하면 Main Preference의 Category2 밑의 요소 활성화">
+                android:summary="허영호 최다영 이용관 신지수">
 
             </Preference>
-
 
         </PreferenceScreen>
 
 
-    <PreferenceScreen android:title="Sub Preferences 가기"
-        android:key="preference_sub"
-        android:summary="클릭하면 Sub Preferences가 호출 됩니다">
 
-    <Preference android:title="Sub CheckBox Preference"
-        android:key="sub_checkbox"
-        android:summaryOff="Check하면 Main Preference의 Category2 밑의 요소 활성화"
-        android:summaryOn="Uncheck하면 Main Preference의 Category2 밑의 요소 비활성화"/>
 
-</PreferenceScreen>
+    </PreferenceCategory>
 
-</PreferenceCategory>
 
 </PreferenceScreen>

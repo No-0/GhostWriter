@@ -65,9 +65,6 @@ public class SelectActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.first:
-                Toast.makeText(this, "1111",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.second:
                 Intent intent = new Intent(getApplicationContext(), settingActivity.class);
                 startActivity(intent);
                 break;

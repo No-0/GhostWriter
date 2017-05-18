@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -70,6 +71,7 @@ public class SelectSubActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), StudentActivity.class);
                 startActivity(intent);
+                overridePendingTransition( R.anim.anim_slide_out_left,R.anim.anim_slide_in_right);
 
                 // TODO : use strText
             }
@@ -81,11 +83,14 @@ public class SelectSubActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {//툴바 뒤로가기
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
