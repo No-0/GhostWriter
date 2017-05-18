@@ -184,6 +184,12 @@ public class StudentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {//취소버튼 누를경우 애니매이션
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+    }
+
 
 
     class SocketClient extends Thread {

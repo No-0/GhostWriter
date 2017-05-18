@@ -1,10 +1,12 @@
 package com.ghostwriter.ghostwriter;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.print.PrintJob;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.dialoid.speech.recognition.SpeechReaderManager;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
@@ -26,6 +30,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static android.os.Build.VERSION_CODES.N;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, SpeechRecognizeListener {
     private SpeechRecognizerClient client;
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String kkk;
     String IPadr;
     String PortN;
+    int Count =0;
 
     boolean ErrorCheck = false;
 
@@ -111,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
     }
 
     @Override
@@ -124,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition( R.anim.anim_slide_out_left,R.anim.anim_slide_in_right);
+    }
 
     class SocketClient extends Thread {
         boolean threadAlive;
@@ -269,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
 ////////////////////////////////////////////////////////음성인식관련/////////////////////////////////////////////
     @Override
     public void onDestroy() {
@@ -324,18 +340,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             finish();
                             android.os.Process.killProcess(android.os.Process.myPid());
                         }
-
-
-
                     }
-
-
 
                     lesson_Server = new SocketClient2(IPadr, PortN);
                     lesson_Server.start();
                     Log.i(PortN,"port");
                     //threadList2.add(lesson_Server);
-
 
                     Check = true;
                 }
@@ -345,6 +355,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     client = builder1.build();
                     client.setSpeechRecognizeListener(this);
                     client.startRecording(true);
+
+
+
 
                     Log.i("startRe", "" + i);
 
@@ -375,8 +388,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onBeginningOfSpeech() {
-
+    public void onBeginningOfSpeech(){
     }
 
     @Override
@@ -385,14 +397,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onError(int i, String s) {
-
-
+        Log.i("에러발생",s);
     }
 
     @Override
     public void onPartialResult(String s) {
-
     }
+
 
 
 
@@ -427,7 +438,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.i("str", strcontroler.str);             //  -->서버로 보내질 음성인식 스트링
         Log.i("i", ""+strcontroler.Thrcounter);    //  -->서버로 보내질 음성인식 순서
-
 
 
 
