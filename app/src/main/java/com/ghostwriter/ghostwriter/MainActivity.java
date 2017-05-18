@@ -57,12 +57,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SS = s;
             Button but = (Button)findViewById(R.id.Button);
              but.setEnabled(true);
+            ErrStateStatus(true);
             return;
 //        Toast.makeText(this,"5초동안 말하지 않아 종료되었습니다.", Toast.LENGTH_LONG).show();
 //        Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 //        vibe.vibrate(3000);
         }
-
+        private void ErrStateStatus(boolean b) {
+            Button but = (Button)findViewById(R.id.Button);
+            but.setEnabled(b);
+            toast.show();
+            Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+            vibe.vibrate(3000);
+        }
         @Override
         public void onPartialResult(String s) {
 
@@ -131,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String Subject = null;
     String Errstr = null;
 
-
+ Toast toast;
     boolean CR = false;
     boolean Check = false;
 
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IPadr = "223.194.152.180"; //아이피주소
         PortN =  "5000"; //포트번호
 
-
+        toast = Toast.makeText(this,"5초동안 말하지 않아 종료되었습니다.", Toast.LENGTH_LONG);
         client_Server = new SocketClient(IPadr, PortN);
         threadList.add(client_Server);
         client_Server.start();
@@ -250,13 +257,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void ErrStateStatus(boolean b) {
-        Button but = (Button)findViewById(R.id.Button);
-        but.setEnabled(b);
-        Toast.makeText(this,"5초동안 말하지 않아 종료되었습니다.", Toast.LENGTH_LONG).show();
-        Vibrator vibe = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-        vibe.vibrate(3000);
-    }
+
     class SocketClient2 extends Thread {
         boolean threadAlive;
         String ip;
