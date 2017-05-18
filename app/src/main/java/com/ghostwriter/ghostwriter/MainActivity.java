@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String IPadr;
     String PortN;
 
+    boolean ErrorCheck = false;
+
     boolean CR = false;
     boolean Check = false;
 
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition( R.anim.anim_slide_out_left,R.anim.anim_slide_in_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -383,6 +386,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onError(int i, String s) {
 
+
     }
 
     @Override
@@ -394,6 +398,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onResults(Bundle bundle) {
+
         final StringBuilder builder = new StringBuilder();
 
         ArrayList<String> Text = bundle.getStringArrayList(SpeechRecognizerClient.KEY_RECOGNITION_RESULTS);

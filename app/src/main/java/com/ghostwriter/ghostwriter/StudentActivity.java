@@ -50,62 +50,65 @@ public class StudentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         IPadr = "223.194.152.180"; //아이피주소
 
         show = (TextView) findViewById(R.id.show);
 
+
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+
 
 
         GETText = ((SelectSubActivity) SelectSubActivity.mContext).GetText();
 
 
+        getSupportActionBar().setTitle(GETText);//타이틀 과목명 변경
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
+
+
         switch (GETText) {//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
             case "국어": {
                 setStatusBarColor(this,0xffcc0000);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));//빨강
                 PortN = "5001";
-
-
             }
             break;
             case "수학": {
-                setStatusBarColor(this,0xffcccc00);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcccc00));
+                setStatusBarColor(this,0xff00aecc);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff00aecc));//어두운 하늘
                 PortN = "5002";
             }
             break;
             case "국사": {
-                setStatusBarColor(this,0xff5fd700);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff5fd700));
+                setStatusBarColor(this,0xff542004);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff542004));//고동색
                 PortN = "5003";
             }
             break;
             case "사회문화": {
                 setStatusBarColor(this,0xFF5F00FF);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF5F00FF));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF5F00FF));//군청
                 PortN = "5004";
             }
             break;
             case "화학": {
-                setStatusBarColor(this,0xffcc00cc);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc00cc));
+                setStatusBarColor(this,0xffFF0057);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffFF0057));//qkfr
                 PortN = "5005";
             }
             break;
             case "생명과학": {
                 setStatusBarColor(this,0xff878787);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff878787));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff878787));//회색
                 PortN = "5006";
             }
             break;
             case "물리": {
-                setStatusBarColor(this,0xffff5fff);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffff5fff));
+                setStatusBarColor(this,0xFF157D00);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF157D00));//초록
                 PortN = "5007";
             }
             break;
@@ -119,8 +122,7 @@ public class StudentActivity extends AppCompatActivity {
         }
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
-        getSupportActionBar().setTitle(GETText);//타이틀 과목명 변경
+
 
 
         client_Server = new SocketClient(IPadr,PortN);
@@ -169,7 +171,6 @@ public class StudentActivity extends AppCompatActivity {
 
 
 
-
     }
 
     @Override
@@ -177,6 +178,7 @@ public class StudentActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
