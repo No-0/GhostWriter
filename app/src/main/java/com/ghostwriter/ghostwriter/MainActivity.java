@@ -118,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
+                    if(!Check) {
                         Button but = (Button) findViewById(R.id.Button);
                         but.performClick();
-
+                    }
                 }
             });
         }
@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             text.setText("수업중이 아닙니다");
             findViewById(R.id.button2).setEnabled(false);
             CR=true;
-            client.cancelRecording();
+            client.stopRecording();
 
             findViewById(R.id.Button).setEnabled(true);//수업 시작 버튼 활성화
 
