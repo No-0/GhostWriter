@@ -22,7 +22,9 @@ import net.daum.mf.speech.api.impl.util.PermissionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.152.180"; //아이피주소
+        IPadr = "223.194.155.208"; //아이피주소
         PortN =  "5000"; //포트번호
 
 
@@ -147,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-                output.println(mac);
+
+                output.println(getURLEncode(mac));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -230,6 +233,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public static String getURLEncode(String content){
+        try {
+            return URLEncoder.encode(content,"utf-8");
+//            return URLDecoder.decode(content, "utf-8");  // EUC-KR
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     class SendThread2 extends Thread {
         private Socket socket;
         PrintWriter output;
@@ -255,7 +268,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (output != null) {
                     if (kkk != null) {
-                        output.println(kkk);
+                        Log.i("kkk", kkk);
+                        output.println(getURLEncode(kkk));
                         //onResults();
                     }
                 }

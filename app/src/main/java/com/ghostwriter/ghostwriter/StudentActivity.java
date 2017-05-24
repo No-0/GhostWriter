@@ -26,7 +26,11 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -53,7 +57,7 @@ public class StudentActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        IPadr = "223.194.152.180"; //아이피주소
+        IPadr = "223.194.155.208"; //?????
 
         show = (TextView) findViewById(R.id.show);
 
@@ -64,48 +68,46 @@ public class StudentActivity extends AppCompatActivity {
         GETText = ((SelectSubActivity) SelectSubActivity.mContext).GetText();
 
 
-        switch (GETText) {//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
+        switch (GETText) {//?? ???? ?? ???? ??, ??? ?? ????
             case "국어": {
                 setStatusBarColor(this,0xffcc0000);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));//빨강
                 PortN = "5001";
-
-
             }
             break;
             case "수학": {
-                setStatusBarColor(this,0xffcccc00);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcccc00));
+                setStatusBarColor(this,0xff00aecc);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff00aecc));//어두운 하늘
                 PortN = "5002";
             }
             break;
             case "국사": {
-                setStatusBarColor(this,0xff5fd700);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff5fd700));
+                setStatusBarColor(this,0xff542004);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff542004));//고동색
                 PortN = "5003";
             }
             break;
             case "사회문화": {
                 setStatusBarColor(this,0xFF5F00FF);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF5F00FF));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF5F00FF));//군청
                 PortN = "5004";
             }
             break;
             case "화학": {
-                setStatusBarColor(this,0xffcc00cc);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc00cc));
+                setStatusBarColor(this,0xffFF0057);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffFF0057));//qkfr
                 PortN = "5005";
             }
             break;
             case "생명과학": {
                 setStatusBarColor(this,0xff878787);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff878787));
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xff878787));//회색
                 PortN = "5006";
             }
             break;
             case "물리": {
-                setStatusBarColor(this,0xffff5fff);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffff5fff));
+                setStatusBarColor(this,0xFF157D00);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF157D00));//초록
                 PortN = "5007";
             }
             break;
@@ -119,8 +121,8 @@ public class StudentActivity extends AppCompatActivity {
         }
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
-        getSupportActionBar().setTitle(GETText);//타이틀 과목명 변경
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//????
+        getSupportActionBar().setTitle(GETText);//??? ??? ??
 
 
         client_Server = new SocketClient(IPadr,PortN);
@@ -137,7 +139,7 @@ public class StudentActivity extends AppCompatActivity {
             }
         };
 
-        //폰트 크기 설정
+        //?? ?? ??
         Button FontUp = (Button) findViewById(R.id.font_up);
         FontUp.setOnClickListener(new View.OnClickListener() {
             TextView textView = (TextView) findViewById(R.id.show);
@@ -173,7 +175,7 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {//툴바 뒤로가기
+    public boolean onOptionsItemSelected(MenuItem item) {//?? ????
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -194,7 +196,7 @@ public class StudentActivity extends AppCompatActivity {
         BufferedReader outputStream = null;
         BufferedReader br = null;
 
-        private DataOutputStream output = null;
+        private PrintWriter output = null;
 
         public SocketClient(String ip, String port) {
             threadAlive = true;
@@ -208,7 +210,7 @@ public class StudentActivity extends AppCompatActivity {
                 socket = new Socket(ip, Integer.parseInt(port));
 
                 //inputStream = socket.getInputStream();
-                output = new DataOutputStream(socket.getOutputStream());
+                output = new PrintWriter(socket.getOutputStream(), true);
                 RT = new SReceiveThread(socket);
                 RT.start();
 
@@ -217,12 +219,34 @@ public class StudentActivity extends AppCompatActivity {
                 mac = info.getMacAddress();
 
 
-                output.writeUTF(mac);
+
+                output.println(getURLEncode(mac));
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
+    public static String getURLDecode(String content){
+        try {
+            return URLDecoder.decode(content, "utf-8");  // EUC-KR
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getURLEncode(String content){
+        try {
+            return URLEncoder.encode(content, "utf-8");  // EUC-KR
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
     class SReceiveThread extends Thread {
         private Socket socket = null;
@@ -232,7 +256,7 @@ public class StudentActivity extends AppCompatActivity {
             this.socket = socket;
             try {
                 input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-;
+
             } catch (Exception e) {
             }
         }
@@ -240,7 +264,8 @@ public class StudentActivity extends AppCompatActivity {
         public void run() {
             try {
                 while (input != null) {
-                    String msg = input.readLine();
+                    String msg = getURLDecode(input.readLine());
+
                     if (msg != null) {
                         Log.d(ACTIVITY_SERVICE, "test");
 
@@ -264,7 +289,7 @@ public class StudentActivity extends AppCompatActivity {
 
 
 
-    public static void setStatusBarColor(Activity activity, int color) {// 상태바 색상 변경함수
+    public static void setStatusBarColor(Activity activity, int color) {// ??? ?? ????
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
