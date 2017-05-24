@@ -30,8 +30,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import static android.R.attr.textSize;
-import static com.ghostwriter.ghostwriter.R.id.textView;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -75,10 +73,6 @@ public class StudentActivity extends AppCompatActivity {
 
         show = (TextView) findViewById(R.id.show);
 
-show.setText("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ\n");
-    for(int i =0; i< 50; i++)
-        show.append("\"ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ\\n\"");
-
         mScroll = (ScrollView)findViewById(R.id.scrollView);
 
 
@@ -97,8 +91,8 @@ show.setText("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ
 
         switch (GETText) {//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
             case "국어": {
-                setStatusBarColor(this,0xffcc0000);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));//빨강
+                setStatusBarColor(this,0xFFD95A5A);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFD95A5A));//빨강
                 PortN = "5001";
             }
             break;
@@ -121,8 +115,8 @@ show.setText("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ
             }
             break;
             case "화학": {
-                setStatusBarColor(this,0xffFF0057);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffFF0057));//qkfr
+                setStatusBarColor(this,0xFFA06BC5);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFA06BC5));//연보라
                 PortN = "5005";
             }
             break;
@@ -146,10 +140,7 @@ show.setText("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ
                 Process.killProcess(Process.myPid());
             }
         }
-
-
-
-
+        
 
         client_Server = new SocketClient(IPadr,PortN);
         client_Server.start();

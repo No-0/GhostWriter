@@ -19,9 +19,6 @@
 
         <PreferenceScreen android:title="다음 뉴톤API"
             android:key="preference_sub">
-                <intent
-                    android:targetClass="com.ghostwriter.ghostwriter.OpenSActivity"
-                    android:targetPackage="com.ghostwriter.ghostwriter" />
 
         </PreferenceScreen>
 
