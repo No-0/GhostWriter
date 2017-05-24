@@ -16,16 +16,25 @@
         tools:layout_editor_absoluteX="-1dp"
         tools:layout_editor_absoluteY="-4dp">
 
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="수업중이 아닙니다"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true" />
+
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_width="250dp"
+            android:layout_height="90dp"
+
             app:srcCompat="@drawable/title1"
             tools:layout_editor_absoluteX="89dp"
-
             tools:layout_editor_absoluteY="91dp"
             android:layout_below="@+id/toolbar"
-            android:layout_alignParentStart="true" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/textView2"
@@ -35,7 +44,7 @@
             android:layout_marginEnd="0dp"
             android:layout_toStartOf="@+id/Subject"
             android:text="과목"
-            android:textSize="30sp"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="71dp"
             tools:layout_editor_absoluteY="273dp" />
 
@@ -43,35 +52,41 @@
             android:id="@+id/Subject"
             android:layout_width="170dp"
             android:layout_height="35dp"
-            android:layout_above="@+id/Button"
-            android:layout_alignEnd="@+id/button2"
-            android:layout_marginBottom="80dp"
-            android:layout_marginEnd="400dp"
             android:entries="@array/Subject"
             android:gravity="center_vertical|center_horizontal"
             tools:layout_editor_absoluteX="125dp"
-            tools:layout_editor_absoluteY="271dp" />
+            tools:layout_editor_absoluteY="271dp"
+            android:layout_marginEnd="11dp"
+            android:layout_centerVertical="true"
+            android:layout_alignEnd="@+id/imageView2" />
 
         <Button
             android:id="@+id/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="131dp"
-            android:layout_marginStart="82dp"
+            android:layout_marginLeft="182dp"
+            android:background="@color/colorAccent"
             android:onClick="bHandler"
             android:text="수업시작"
+            android:textColor="?attr/colorButtonNormal"
+            android:textSize="20sp"
             tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="358dp" />
+            tools:layout_editor_absoluteY="358dp"
+            android:layout_alignBaseline="@+id/button2"
+            android:layout_alignBottom="@+id/button2"
+            android:layout_toStartOf="@+id/Subject" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/Subject"
-            android:layout_marginEnd="82dp"
-            android:text="수업종료" />
+            android:background="@color/colorAccent"
+            android:text="수업종료"
+            android:textColor="?attr/colorButtonNormal"
+            android:textSize="20sp"
+            android:layout_marginTop="27dp"
+            android:layout_below="@+id/status"
+            android:layout_alignEnd="@+id/imageView2" />
 
 
         <android.support.v7.widget.Toolbar
