@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@drawable/background1"
     android:orientation="vertical"
     android:weightSum="1"
     tools:context="com.ghostwriter.ghostwriter.MainActivity"
@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="368dp"
         android:layout_height="551dp"
-        android:background="@android:color/background_light"
+        android:background="@android:color/transparent"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
@@ -22,13 +22,13 @@
             android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/title"
-            tools:layout_editor_absoluteX="89dp"
-
-            tools:layout_editor_absoluteY="91dp"
             android:layout_above="@+id/status"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="10dp" />
+
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/title1"
+            tools:layout_editor_absoluteX="89dp"
+            tools:layout_editor_absoluteY="91dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -86,11 +86,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:background="@color/colorPrimaryDark"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
 
 
     </RelativeLayout>

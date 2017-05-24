@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     tools:context="com.ghostwriter.ghostwriter.StudentActivity">
 
     <RelativeLayout
 
         android:id="@+id/RLayout"
-        android:layout_width="360dp"
-        android:layout_height="618dp"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="2dp">
+        android:layout_width="362dp"
+        android:layout_height="614dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -30,10 +31,9 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="27dp"
-            android:layout_below="@+id/toolbar"
-            android:layout_alignParentStart="true">
+            android:layout_above="@+id/down"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,6 +46,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
+                    android:textColor="?attr/colorButtonNormal"
                     android:textSize="20sp"
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="16dp" />
@@ -56,19 +57,28 @@
             android:id="@+id/font_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="13dp"
-            android:text="font_down"
             android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/font_up" />
+            android:layout_marginEnd="13dp"
+            android:layout_toStartOf="@+id/font_up"
+            android:text="font_down" />
 
         <Button
             android:id="@+id/font_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/font_down"
-            android:layout_alignBottom="@+id/font_down"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:text="font_up" />
+
+        <ImageButton
+            android:id="@+id/down"
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/font_down"
+            android:background="@color/colorAccent"
+            app:srcCompat="@drawable/down" />
 
 
     </RelativeLayout>

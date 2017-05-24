@@ -10,37 +10,39 @@
     tools:context="com.ghostwriter.ghostwriter.SelectActivity">
 
     <RelativeLayout
-        android:layout_width="368dp"
-        android:layout_height="551dp"
-        tools:layout_editor_absoluteX="-4dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_width="640dp"
+        android:layout_height="338dp"
+        tools:layout_editor_absoluteX="-1dp"
+        tools:layout_editor_absoluteY="2dp">
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="14dp"
+            android:layout_width="250dp"
+            android:layout_height="90dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
             app:srcCompat="@drawable/title1" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="620dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:theme="?attr/actionBarTheme"
+            android:layout_alignParentEnd="true" />
 
         <ImageButton
             android:id="@+id/Teacher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView3"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="73dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="91dp"
+            android:layout_marginStart="144dp"
             android:background="@color/colorAccent"
             app:srcCompat="@drawable/ti" />
 
@@ -48,11 +50,11 @@
             android:id="@+id/Student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="118dp"
             android:background="@color/colorAccent"
             app:srcCompat="@drawable/si"
-            android:layout_below="@+id/Teacher"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="89dp" />
+            android:layout_alignBottom="@+id/Teacher"
+            android:layout_toEndOf="@+id/Teacher" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

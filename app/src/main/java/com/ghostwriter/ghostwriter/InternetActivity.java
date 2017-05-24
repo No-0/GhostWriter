@@ -16,3 +16,4 @@ public class InternetActivity extends AppCompatActivity {
         myWebView.loadUrl("http://developers.daum.net/");
     }
 }
+

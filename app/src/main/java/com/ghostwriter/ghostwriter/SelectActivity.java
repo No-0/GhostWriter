@@ -9,13 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import static com.ghostwriter.ghostwriter.R.id.toolbar;
 
 public class SelectActivity extends AppCompatActivity {
-    Button TButton;
-    Button SButton;
+    ImageButton TButton;
+    ImageButton SButton;
     Toolbar mToolbar;
 
     @Override
@@ -24,7 +25,7 @@ public class SelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        TButton = (Button)findViewById(R.id.Teacher);
+        TButton = (ImageButton)findViewById(R.id.Teacher);
         TButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,7 +39,7 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
 
-        SButton = (Button)findViewById(R.id.Student);
+        SButton = (ImageButton)findViewById(R.id.Student);
         SButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

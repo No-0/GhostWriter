@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+
+import static android.R.attr.textSize;
+import static com.ghostwriter.ghostwriter.R.id.textView;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -44,16 +49,37 @@ public class StudentActivity extends AppCompatActivity {
     TextView show;
     Handler msghandler;
     Toolbar mToolbar;
+    ScrollView mScroll;
+
+
+    public void scrollToEnd(){
+        mScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                mScroll.fullScroll(View.FOCUS_DOWN);
+            }
+
+        });
+
+    }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
-        IPadr = "223.194.152.180"; //아이피주소
+        IPadr = "223.194.155.46"; //아이피주소
 
         show = (TextView) findViewById(R.id.show);
+
+show.setText("ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ\n");
+    for(int i =0; i< 50; i++)
+        show.append("\"ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ\\n\"");
+
+        mScroll = (ScrollView)findViewById(R.id.scrollView);
 
 
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -139,6 +165,14 @@ public class StudentActivity extends AppCompatActivity {
             }
         };
 
+        msghandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mScroll.fullScroll(View.FOCUS_DOWN);
+                mScroll.invalidate();
+            }
+        },100);
+
         //폰트 크기 설정
         Button FontUp = (Button) findViewById(R.id.font_up);
         FontUp.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +202,19 @@ public class StudentActivity extends AppCompatActivity {
                 }
             }
         });
-        
+
+
+
+
+        ImageButton down = (ImageButton) findViewById(R.id.down);
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToEnd();
+            }
+        });
+
+
 
     }
 

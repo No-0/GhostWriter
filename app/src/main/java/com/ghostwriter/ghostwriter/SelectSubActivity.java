@@ -2,6 +2,7 @@ package com.ghostwriter.ghostwriter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -57,9 +58,9 @@ public class SelectSubActivity extends AppCompatActivity {
 
 
 
-
         listview = (ListView) findViewById(R.id.listview) ;
         listview.setAdapter(adapter) ;
+
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,14 +102,6 @@ public class SelectSubActivity extends AppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
     }
-
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-    }
-
 
 
 

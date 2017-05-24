@@ -2,43 +2,43 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ghostwriter.ghostwriter.StudentActivity">
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="1303dp"
-        android:layout_height="37dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="-1dp" />
-
     <RelativeLayout
 
         android:id="@+id/RLayout"
-        android:layout_width="598dp"
-        android:layout_height="698dp"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="44dp">
+        android:layout_width="640dp"
+        android:layout_height="335dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="1303dp"
+            android:layout_height="37dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            tools:layout_editor_absoluteX="-1dp"
+            tools:layout_editor_absoluteY="-1dp" />
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_above="@+id/font_down"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="405dp"
-            android:layout_marginEnd="7dp">
+            android:layout_above="@+id/down"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
@@ -46,7 +46,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_below="@+id/toolbar"
+                    android:textColor="?attr/colorButtonNormal"
                     android:textSize="20sp"
                     tools:layout_editor_absoluteX="16dp"
                     tools:layout_editor_absoluteY="16dp" />
@@ -57,20 +58,29 @@
             android:id="@+id/font_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="267dp"
-            android:text="font_down"
-            android:layout_marginEnd="14dp"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/font_up" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="21dp"
+            android:layout_toStartOf="@+id/font_up"
+            android:text="font_down" />
+
+        <ImageButton
+            android:id="@+id/down"
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/font_down"
+            android:background="@color/colorAccent"
+            app:srcCompat="@drawable/down" />
 
         <Button
             android:id="@+id/font_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="font_up"
-            android:layout_alignBaseline="@+id/font_down"
-            android:layout_alignBottom="@+id/font_down"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="36dp"
+            android:text="font_up" />
 
 
     </RelativeLayout>

@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         text = (TextView) findViewById(R.id.status);
         ImageView pictureim = (ImageView) findViewById(R.id.imageView2);
-        pictureim.setImageResource(R.drawable.title);
+        pictureim.setImageResource(R.drawable.title1);
 
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.152.180"; //아이피주소
+        IPadr = "223.194.152.104"; //아이피주소
         PortN = "5000"; //포트번호
 
         toast = Toast.makeText(this, "5초동안 말하지 않아 종료되었습니다.", Toast.LENGTH_LONG);
