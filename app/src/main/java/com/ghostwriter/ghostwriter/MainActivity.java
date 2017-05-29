@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
 
-               output.println(getURLEncode("Teacher"));
+                output.println(getURLEncode("Teacher"));
 //                if(CR){
 //                    socket2.close();
 //                    CR=false;
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-////////////////////////////////////////////////////////음성인식관련/////////////////////////////////////////////
+    ////////////////////////////////////////////////////////음성인식관련/////////////////////////////////////////////
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -321,12 +321,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
 
-                    CR = false;
-                    client = builder1.build();
-                    client.setSpeechRecognizeListener(this);
-                    client.startRecording(true);
+                CR = false;
+                client = builder1.build();
+                client.setSpeechRecognizeListener(this);
+                client.startRecording(true);
 
-                    Log.i("startRe", "" + i);
+                Log.i("startRe", "" + i);
 
             }
         }
@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onFinished() {
         if(CR ==false)
-        client.startRecording(true);
+            client.startRecording(true);
 
     }
 
@@ -422,3 +422,6 @@ class Strcontroler{
     int Thrcounter;
 
 }
+
+
+
