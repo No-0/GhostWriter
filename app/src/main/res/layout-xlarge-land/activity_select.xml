@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@drawable/background1"
     tools:context="com.ghostwriter.ghostwriter.SelectActivity">
 
     <RelativeLayout
-        android:layout_width="1264dp"
+        android:layout_width="1300dp"
         android:layout_height="711dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
@@ -17,38 +17,41 @@
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            app:srcCompat="@drawable/title"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            app:srcCompat="@drawable/title1" />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/Teacher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ti"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="350dp"
-            android:text="Teacher" />
+            android:layout_toEndOf="@+id/Student" />
 
-        <Button
+        <ImageButton
             android:id="@+id/Student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/Teacher"
-            android:layout_below="@+id/Teacher"
-            android:layout_marginTop="111dp"
-            android:text="Student" />
+            android:background="@color/colorAccent"
+            app:srcCompat="@drawable/si"
+            android:layout_below="@+id/imageView4"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="157dp" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+            android:layout_width="1300dp"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:background="@color/colorPrimaryDark"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

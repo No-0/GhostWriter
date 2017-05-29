@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ghostwriter.ghostwriter.SelectSubActivity">
@@ -10,14 +11,15 @@
         android:id="@+id/listview"
         android:layout_width="1264dp"
         android:layout_height="797dp"
+        android:textColor="?attr/colorButtonNormal"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:layout_editor_absoluteX="8dp" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="1264dp"
+        android:layout_width="1300dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         tools:layout_editor_absoluteX="8dp"

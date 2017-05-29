@@ -14,12 +14,12 @@ public class IntroActivity extends Activity {
         setContentView(R.layout.activity_intro);
 
 
-
         ImageView pictureim = (ImageView)findViewById(R.id.imageView);
         pictureim.setImageResource(R.drawable.simbol);
 
         ImageView pictureim2 = (ImageView)findViewById(R.id.imageView2);
         pictureim2.setImageResource(R.drawable.kakao_api_endorsedmark_screen);
+
 
 
 
