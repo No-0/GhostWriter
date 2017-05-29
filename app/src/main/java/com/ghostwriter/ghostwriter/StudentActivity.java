@@ -141,7 +141,7 @@ public class StudentActivity extends AppCompatActivity {
             }
         };
 
-        //?? ?? ??
+
         Button FontUp = (Button) findViewById(R.id.font_up);
         FontUp.setOnClickListener(new View.OnClickListener() {
             TextView textView = (TextView) findViewById(R.id.show);
@@ -219,17 +219,13 @@ public class StudentActivity extends AppCompatActivity {
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
-                String non = "\n";
+                /*String non = "\n";
                 String login = "teacher Login";
 
                 output.println(getURLEncode(non));
-                output.println(getURLEncode(login));
-                Message hdmsg = msghandler.obtainMessage();
-                hdmsg.what = 11111;
-                hdmsg.obj = "login";
-                msghandler.sendMessage(hdmsg);
-                Log.d(ACTIVITY_SERVICE, hdmsg.obj.toString());
-                //output.print(mac);
+                output.println(getURLEncode(login));*/
+
+                output.println(getURLEncode(mac));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -280,7 +276,7 @@ public class StudentActivity extends AppCompatActivity {
         public SReceiveThread(Socket socket) {
             this.socket = socket;
             try {
-                input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                input = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
             } catch (Exception e) {
             }
@@ -288,31 +284,24 @@ public class StudentActivity extends AppCompatActivity {
 
         public void run() {
             try {
-                while (input != null) {
-                    Log.v("ttt", "메시지0");
-//                  String ms = input.readLine();
-
-                    String msg = input.readLine();
-                    Log.i("ttt", "msg");
-                        Log.v("ttt", "메시지1");
-
+                while (true) {
+                    if(input!=null) {
+                        String msg = getURLDecode(input.readLine());
+                        StringTokenizer messagecut = new StringTokenizer(msg, "|");
                         if (msg != null) {
-                            Log.v("ttt", "메시지2");
-                            if (msg.contains("ToStudent")) {
-                                Log.v("ttt", "메시지3");
-                                //StringTokenizer messagecut = new StringTokenizer(msg, "ToStudent");
-                                // msg = messagecut.nextToken();
+                            if (messagecut.nextToken().equals("ToStudent")) {
+                                String t = messagecut.nextToken();
 
                                 Log.d(ACTIVITY_SERVICE, "test");
-
                                 Message hdmsg = msghandler.obtainMessage();
                                 hdmsg.what = 11111;
-                                hdmsg.obj = msg;
+                                hdmsg.obj = t;
                                 msghandler.sendMessage(hdmsg);
+                                Log.i("ttt", "msg");
                                 Log.d(ACTIVITY_SERVICE, hdmsg.obj.toString());
                             }
                         }
-
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -21,6 +21,7 @@ import net.daum.mf.speech.api.SpeechRecognizerManager;
 import net.daum.mf.speech.api.impl.util.PermissionUtils;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Socket socket;
     Socket socket2;
     String Subject;
-    SendThread S;
+
     TextView text;
     Toolbar mToolbar;
 
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String ip;
         String port;
         String mac;
-
+        Socket socket;
 
         private PrintWriter output = null;
 
@@ -172,66 +173,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             threadAlive = true;
             this.ip = ip;
             this.port = port;
+
+            try {
+                socket2 = new Socket(this.ip,Integer.parseInt(this.port));
+                this.socket = new Socket(this.ip,Integer.parseInt(this.port));
+                output =  new PrintWriter(socket2.getOutputStream(), true);
+
+            } catch (Exception e) {
+            }
         }
 
         @Override
         public void run() {
             try {
 
-                socket2 = new Socket(ip, Integer.parseInt(port));
-                if(socket2 == null)
-                    output =  new PrintWriter(socket.getOutputStream(), true);
 
+                //output =  new PrintWriter(new OutputStreamWriter(this.socket.getOutputStream()));
 
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
-                mac = info.getMacAddress();
-                //output.println(mac);
+
+               output.println(getURLEncode("Teacher"));
 //                if(CR){
 //                    socket2.close();
 //                    CR=false;
 //                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    class SendThread extends Thread {
-        private Socket socket;
-        PrintWriter output;
-
-        public SendThread(Socket socket) {
-            this.socket = socket;
-            try {
-                output =  new PrintWriter(socket.getOutputStream(), true);
-
-
-
-            } catch (Exception e) {
-            }
-        }
-        public void run() {
-            try {Log.d(ACTIVITY_SERVICE, "11111");
-
-                String mac = null;
-                WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                WifiInfo info = mng.getConnectionInfo();
-                mac = info.getMacAddress();
-
-                if (output != null) {
-                    if (Subject != null) {
-                        output.println(Subject);
-                        //onResults();
-                    }
-                }
             } catch (NullPointerException npe)
-
             {
                 npe.printStackTrace();
             }
-
         }
     }
+
 
     public static String getURLEncode(String content){
         try {
@@ -251,8 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.socket = socket;
             try {
                 output =  new PrintWriter(socket.getOutputStream(), true);
-
-
 
             } catch (Exception e) {
             }
@@ -308,9 +279,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     switch (SelectSubject.toString()) {
                         case "국어":
                             PortN = "5001";
-                            S = new SendThread(socket);
-                            Subject = "선생님 "+ SelectSubject.toString();
-                            S.start();
                             break;
                         case "수학":
                             PortN = "5002";
@@ -422,24 +390,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         kkk = "teacher ";
         kkk += strcontroler.str;
 
-        findViewById(R.id.Button).performClick();
+        //findViewById(R.id.Button).performClick();
+
         send3= new SendThread2(socket2);
-        S=new SendThread(socket);
+
         send3.start();
 
-        try {
-            send3.join();
-            S.start();
-            S.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         Log.i("str", strcontroler.str);             //  -->서버로 보내질 음성인식 스트링
         Log.i("i", ""+strcontroler.Thrcounter);    //  -->서버로 보내질 음성인식 순서
-
-
-
 
     }
 
