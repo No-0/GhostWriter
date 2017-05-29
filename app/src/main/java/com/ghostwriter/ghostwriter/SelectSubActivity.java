@@ -35,7 +35,7 @@ public class SelectSubActivity extends AppCompatActivity {
     TextView show;
     Handler msghandler;
 
-    String IPadr = "223.194.155.208"; //아이피주소
+    String IPadr = "223.194.156.241"; //아이피주소
     String PortN =  "5000"; //포트번호
 
 

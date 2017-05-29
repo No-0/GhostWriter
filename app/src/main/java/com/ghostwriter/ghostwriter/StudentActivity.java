@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.StringTokenizer;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -57,7 +59,7 @@ public class StudentActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        IPadr = "223.194.155.208"; //?????
+        IPadr = "223.194.156.241"; //?????
 
         show = (TextView) findViewById(R.id.show);
 
@@ -217,11 +219,17 @@ public class StudentActivity extends AppCompatActivity {
                 WifiManager mng = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
+                String non = "\n";
+                String login = "teacher Login";
 
-
-
-                output.println(getURLEncode(mac));
-
+                output.println(getURLEncode(non));
+                output.println(getURLEncode(login));
+                Message hdmsg = msghandler.obtainMessage();
+                hdmsg.what = 11111;
+                hdmsg.obj = "login";
+                msghandler.sendMessage(hdmsg);
+                Log.d(ACTIVITY_SERVICE, hdmsg.obj.toString());
+                //output.print(mac);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -246,6 +254,23 @@ public class StudentActivity extends AppCompatActivity {
         return null;
     }
 
+    public static String getURLDecodeEuc(String content){
+        try {
+            return URLEncoder.encode(content, "euc-kr");  // EUC-KR
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getURLEncodeEuc(String content){
+        try {
+            return URLEncoder.encode(content, "euc-kr");  // EUC-KR
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     class SReceiveThread extends Thread {
@@ -264,18 +289,30 @@ public class StudentActivity extends AppCompatActivity {
         public void run() {
             try {
                 while (input != null) {
-                    String msg = getURLDecode(input.readLine());
+                    Log.v("ttt", "메시지0");
+//                  String ms = input.readLine();
 
-                    if (msg != null) {
-                        Log.d(ACTIVITY_SERVICE, "test");
+                    String msg = input.readLine();
+                    Log.i("ttt", "msg");
+                        Log.v("ttt", "메시지1");
 
-                        Message hdmsg = msghandler.obtainMessage();
-                        hdmsg.what = 11111;
-                        hdmsg.obj = msg;
-                        msghandler.sendMessage(hdmsg);
-                        Log.d(ACTIVITY_SERVICE, hdmsg.obj.toString());
+                        if (msg != null) {
+                            Log.v("ttt", "메시지2");
+                            if (msg.contains("ToStudent")) {
+                                Log.v("ttt", "메시지3");
+                                //StringTokenizer messagecut = new StringTokenizer(msg, "ToStudent");
+                                // msg = messagecut.nextToken();
 
-                    }
+                                Log.d(ACTIVITY_SERVICE, "test");
+
+                                Message hdmsg = msghandler.obtainMessage();
+                                hdmsg.what = 11111;
+                                hdmsg.obj = msg;
+                                msghandler.sendMessage(hdmsg);
+                                Log.d(ACTIVITY_SERVICE, hdmsg.obj.toString());
+                            }
+                        }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();

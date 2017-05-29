@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         threadList = new LinkedList<MainActivity.SocketClient>();
 
-        IPadr = "223.194.155.208"; //아이피주소
+        IPadr = "223.194.156.241"; //아이피주소
         PortN =  "5000"; //포트번호
 
 
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mac = info.getMacAddress();
 
                 output.println(getURLEncode(mac));
-
+                //output.print(mac);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (kkk != null) {
                         Log.i("kkk", kkk);
                         output.println(getURLEncode(kkk));
+                        //output.println(kkk.decode("utf-8"));
                         //onResults();
                     }
                 }
@@ -418,8 +419,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         strcontroler.str = Text.get(0);
 
         strcontroler.Thrcounter = i;
-
-        kkk = strcontroler.str;
+        kkk = "teacher ";
+        kkk += strcontroler.str;
 
         findViewById(R.id.Button).performClick();
         send3= new SendThread2(socket2);
