@@ -19,7 +19,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.MultiAutoCompleteTextView;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,20 @@ public class StudentActivity extends AppCompatActivity {
     TextView show;
     Handler msghandler;
     Toolbar mToolbar;
+    ScrollView mScroll;
+
+
+    public void scrollToEnd(){
+        mScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                mScroll.fullScroll(View.FOCUS_DOWN);
+            }
+
+        });
+
+    }
+
 
 
     @Override
@@ -63,17 +78,26 @@ public class StudentActivity extends AppCompatActivity {
 
         show = (TextView) findViewById(R.id.show);
 
+        mScroll = (ScrollView)findViewById(R.id.scrollView);
+
+
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+
 
 
         GETText = ((SelectSubActivity) SelectSubActivity.mContext).GetText();
 
 
-        switch (GETText) {//?? ???? ?? ???? ??, ??? ?? ????
+        getSupportActionBar().setTitle(GETText);//타이틀 과목명 변경
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
+
+
+        switch (GETText) {//받은 과목명에 따른 포트번호 할당, 현재는 임시 포트번호
             case "국어": {
-                setStatusBarColor(this,0xffcc0000);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffcc0000));//빨강
+                setStatusBarColor(this,0xFFD95A5A);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFD95A5A));//빨강
                 PortN = "5001";
             }
             break;
@@ -96,8 +120,8 @@ public class StudentActivity extends AppCompatActivity {
             }
             break;
             case "화학": {
-                setStatusBarColor(this,0xffFF0057);
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xffFF0057));//qkfr
+                setStatusBarColor(this,0xFFA06BC5);
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFA06BC5));//연보라
                 PortN = "5005";
             }
             break;
@@ -123,10 +147,6 @@ public class StudentActivity extends AppCompatActivity {
         }
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//????
-        getSupportActionBar().setTitle(GETText);//??? ??? ??
-
-
         client_Server = new SocketClient(IPadr,PortN);
         client_Server.start();
         RT = new SReceiveThread(socket);
@@ -136,12 +156,20 @@ public class StudentActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message hdmsg) {
                 if (hdmsg.what == 11111) {
-                    show.append(hdmsg.obj.toString());
+                    show.append(hdmsg.obj.toString()+" ");
                 }
             }
         };
 
+        msghandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mScroll.fullScroll(View.FOCUS_DOWN);
+                mScroll.invalidate();
+            }
+        },100);
 
+        //폰트 크기 설정
         Button FontUp = (Button) findViewById(R.id.font_up);
         FontUp.setOnClickListener(new View.OnClickListener() {
             TextView textView = (TextView) findViewById(R.id.show);
@@ -174,16 +202,33 @@ public class StudentActivity extends AppCompatActivity {
 
 
 
+        ImageButton down = (ImageButton) findViewById(R.id.down);
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToEnd();
+            }
+        });
+
+
+
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {//?? ????
+    public boolean onOptionsItemSelected(MenuItem item) {//툴바 뒤로가기
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {//취소버튼 누를경우 애니매이션
+        super.onBackPressed();
+        overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
     }
 
 

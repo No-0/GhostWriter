@@ -1,19 +1,29 @@
 package com.ghostwriter.ghostwriter;
 
+import android.bluetooth.BluetoothHeadset;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.daum.mf.speech.api.SpeechRecognizeListener;
 import net.daum.mf.speech.api.SpeechRecognizerClient;
@@ -34,12 +44,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SpeechRecognizerClient client;
     private int i;
     public static final String APIKEY = "3feaa382db9fdfe5ac35fa0094b4f986";
+    public static final String APIKEY2 = "ec7b2b6720a7ca7032d4b8f7a9f95568";
+    Object SelectSubject = null;
+    String kkk = null;
+    String IPadr = null;
+    String PortN = null;
+    String Subject = null;
+    String Errstr = null;
 
-    Object SelectSubject;
-    String kkk;
-    String IPadr;
-    String PortN;
-
+    Toast toast;
     boolean CR = false;
     boolean Check = false;
 
@@ -49,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SendThread2 send3;
     Socket socket;
     Socket socket2;
-    String Subject;
+
 
     TextView text;
     Toolbar mToolbar;
@@ -62,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinkedList<SocketClient> threadList;
     LinkedList<SocketClient2> threadList2;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        text = (TextView)findViewById(R.id.status);
-        ImageView pictureim = (ImageView)findViewById(R.id.imageView2);
-        pictureim.setImageResource(R.drawable.title);
+
+
+        text = (TextView) findViewById(R.id.status);
+        ImageView pictureim = (ImageView) findViewById(R.id.imageView2);
+        pictureim.setImageResource(R.drawable.title1);
 
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
 
@@ -88,29 +105,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IPadr = "223.194.156.241"; //아이피주소
         PortN =  "5000"; //포트번호
 
-
+        toast = Toast.makeText(this, "5초동안 말하지 않아 종료되었습니다.", Toast.LENGTH_LONG);
         client_Server = new SocketClient(IPadr, PortN);
         threadList.add(client_Server);
         client_Server.start();
 
         //과목 선택
 
-        Spinner SlassSpinner=(Spinner)findViewById(R.id.Subject);
+        Spinner SlassSpinner = (Spinner) findViewById(R.id.Subject);
 
-        SlassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+        SlassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 SelectSubject = adapterView.getItemAtPosition(position);//해당위치의 과목명 저장
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
         // Set a toolbar to  replace to action bar
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
 
     }
 
@@ -119,9 +140,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                overridePendingTransition( R.anim.anim_slide_out_left,R.anim.anim_slide_in_right);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition( R.anim.anim_slide_out_left,R.anim.anim_slide_in_right);
     }
 
 
@@ -151,8 +178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 WifiInfo info = mng.getConnectionInfo();
                 mac = info.getMacAddress();
 
-                output.println(getURLEncode(mac));
-                //output.print(mac);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -252,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
     ////////////////////////////////////////////////////////음성인식관련/////////////////////////////////////////////
     @Override
     public void onDestroy() {
@@ -261,8 +287,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
     @Override
     public void onClick(View v) {
 
@@ -270,10 +294,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String serviceType = SpeechRecognizerClient.SERVICE_TYPE_DICTATION;
 
-        if(id == R.id.Button){
-            if(PermissionUtils.checkAudioRecordPermission(this)) {
+        if (id == R.id.Button) {
+            if (PermissionUtils.checkAudioRecordPermission(this)) {
                 text.setText("수업중입니다");
-                findViewById(R.id.Button).setEnabled(false);// 수업시작 버튼 비활성화
+                //findViewById(R.id.Button).setEnabled(false);// 수업시작 버튼 비활성화
                 findViewById(R.id.button2).setEnabled(true);
                 if(!Check) {
                     switch (SelectSubject.toString()) {
@@ -366,6 +390,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onError(int i, String s) {
 
+        Button but = (Button) findViewById(R.id.Button);
+        but.setEnabled(true);
+        ErrStateStatus(true);
+        return;
+    }
+
+    private void ErrStateStatus(boolean b) {
+        Button but = (Button) findViewById(R.id.Button);
+        but.setEnabled(b);
+        toast.show();
+        Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibe.vibrate(3000);
     }
 
     @Override
